@@ -43,7 +43,7 @@ class _MyHomePageState extends State<MyHomePage> {
       // Navigate to SecondScreen after the delay
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => login()),
+        MaterialPageRoute(builder: (context) => Login()),
       );
     });
   }

@@ -1,9 +1,8 @@
-import 'dart:html';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class login extends StatelessWidget {
+
+class Login extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,7 +25,7 @@ class login extends StatelessWidget {
             Text("¿te has olvidado la contraseña?",
                 style: TextStyle(color: Colors.white),),
             SizedBox(height: 20),
-            Button(),
+    
             Image.asset('assets/drj.png',height: 300,),
             SizedBox(height: 20),
           ],
