@@ -1,6 +1,4 @@
-
 import 'package:flutter/material.dart';
-
 
 void main() {
   runApp(MyApp());
@@ -14,90 +12,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: Login(),
-    );
-  }
-}
-
-class Login extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        child:Column(
-          children: <Widget>[
-            SizedBox(height: 90),
-            Text('Introduce tu usuario y contraseña',
-                style: TextStyle(color: Colors.white, fontSize: 24),),
-            SizedBox(height: 20),
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(12.0),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  children: [
-                    Text('Correo electrónico',
-                        style: TextStyle(color: Colors.black),),
-                    SizedBox(height: 20),
-                    TextFormField(
-                      style: TextStyle(color: Colors.black),
-                    ),
-                    SizedBox(height: 20),
-                    Text('Contraseña',
-                        style: TextStyle(color: Colors.black),),
-                    SizedBox(height: 20),
-                    TextField(
-                      style: TextStyle(color: Colors.black),
-                    ),
-                    SizedBox(height: 20),
-                  ],
-                ),
-              ),
-            ),
-            SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ElevatedButton(
-                  onPressed: () {
-                    // Lógica de iniciar sesión
-                  },
-                  child: Text('Iniciar Sesión'),
-                ),
-                SizedBox(width: 20),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => Registro()),
-                    );
-                  },
-                  child: Text('Registrarse'),
-                ),
-              ],
-            ),
-            SizedBox(height: 20),
-            Text("¿Has olvidado la contraseña?",
-                style: TextStyle(color: Colors.white),),
-            SizedBox(height: 20),
-            Image.asset('assets/drj.png', height: 300,),
-            SizedBox(height: 20),
-          ],
-        ),
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              Color(0xFF000000), // Black background
-              Color(0xFF1414B8), // Blue stripe at the top
-            ],
-            begin: Alignment.topCenter, // Gradient starts from the top center
-            end: Alignment.bottomCenter, // Gradient ends at the bottom center
-          ),
-        ),
-      ),
+      home: Registro(),
     );
   }
 }

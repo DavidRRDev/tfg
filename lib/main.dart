@@ -9,7 +9,7 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({Key? key});
 
   // This widget is the root of your application.
   @override
@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+  const MyHomePage({Key? key, required this.title});
 
   final String title;
 
@@ -63,16 +63,15 @@ class _MyHomePageState extends State<MyHomePage> {
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [
-              Colors.black, // Black background
-              Colors.blueAccent, // Blue stripe at the top
+              Color(0xFF000000), // Black background
+              Color(0xFF1414B8), // Blue stripe in the middle
+              Color(0xFF000000), // Black background
             ],
             begin: Alignment.topCenter, // Gradient starts from the top center
             end: Alignment.bottomCenter, // Gradient ends at the bottom center
           ),
         ),
-        ),
-
-      // This trailing comma makes auto-formatting nicer for build methods.
+      )
     );
   }
 }
