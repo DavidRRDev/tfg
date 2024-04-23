@@ -1,5 +1,7 @@
-import 'dart:async';
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+
 import 'login.dart';
 
 void main() {
@@ -9,12 +11,13 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({Key? key});
 
+  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
@@ -23,7 +26,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
+  const MyHomePage({Key? key, required this.title});
 
   final String title;
 
@@ -37,7 +40,7 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
     // Start a timer after 3 seconds
     Future.delayed(Duration(seconds: 3), () {
-      // Navigate to Login screen after the delay
+      // Navigate to SecondScreen after the delay
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => Login()),
@@ -49,27 +52,26 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
+        height: max(1000, 2000),
+        child:Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Image.asset('assets/drj.png'),
+            SizedBox(height: 20),
+          ],
+        ),
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [
-              Colors.black, // Black background
-              Colors.blueAccent, // Blue stripe at the top
+              Color(0xFF000000), // Black background
+              Color(0xFF1414B8), // Blue stripe in the middle
+              Color(0xFF000000), // Black background
             ],
             begin: Alignment.topCenter, // Gradient starts from the top center
             end: Alignment.bottomCenter, // Gradient ends at the bottom center
           ),
         ),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Image.asset('assets/drj.png'),// Espacio entre las imágenes
-
-              Image.asset('assets/loading.gif', height: 150,),
-            ],
-          ),
-        ),
-      ),
+      )
     );
   }
 }
