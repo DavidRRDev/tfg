@@ -1,7 +1,5 @@
-import 'dart:math';
-
+import 'dart:async';
 import 'package:flutter/material.dart';
-
 import 'login.dart';
 
 void main() {
@@ -9,15 +7,14 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({Key? key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.deepPurple),
         useMaterial3: true,
       ),
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
@@ -26,7 +23,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+  const MyHomePage({Key? key, required this.title}) : super(key: key);
 
   final String title;
 
@@ -40,7 +37,7 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
     // Start a timer after 3 seconds
     Future.delayed(Duration(seconds: 3), () {
-      // Navigate to SecondScreen after the delay
+      // Navigate to Login screen after the delay
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => Login()),
@@ -52,14 +49,6 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        height: max(1000, 2000),
-        child:Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Image.asset('assets/drj.png'),
-            SizedBox(height: 20),
-          ],
-        ),
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [
@@ -70,9 +59,17 @@ class _MyHomePageState extends State<MyHomePage> {
             end: Alignment.bottomCenter, // Gradient ends at the bottom center
           ),
         ),
-        ),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Image.asset('assets/drj.png'),// Espacio entre las imágenes
 
-      // This trailing comma makes auto-formatting nicer for build methods.
+              Image.asset('assets/loading.gif', height: 150,),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
