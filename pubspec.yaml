@@ -62,7 +62,6 @@ flutter:
   assets:
     - assets/drj.png
     - assets/loading.gif
-  
   # assets:
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
