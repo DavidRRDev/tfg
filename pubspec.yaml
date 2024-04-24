@@ -62,19 +62,7 @@ flutter:
   assets:
     - assets/drj.png
     - assets/loading.gif
-    - assets/fondo.jpg
-    - assets/comidaInicio.jpg
-    - assets/pesaInicio.jpg
-    - assets/menuRayas.png
-    - assets/ajusteMenu.png
-    - assets/casaMenu.png
-    - assets/perfil.png
-    - assets/iconoPesa.png
-    - assets/manzana.png
-    - assets/calendario.png
-    - assets/ubicacion.png
-    - assets/amigoMenu.png
-    - assets/cerrarSesion.png
+  
   # assets:
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
