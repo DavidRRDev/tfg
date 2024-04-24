@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
-import 'paginaPrincipal.dart';
+import 'login.dart';
 
 void main() {
   runApp(const MyApp());
@@ -43,7 +43,7 @@ class _MyHomePageState extends State<MyHomePage> {
       // Navigate to SecondScreen after the delay
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => PaginaPrincipal()),
+        MaterialPageRoute(builder: (context) => Login()),
       );
     });
   }
