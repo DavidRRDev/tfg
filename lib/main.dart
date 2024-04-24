@@ -57,7 +57,7 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Image.asset('assets/drj.png'),
-            SizedBox(height: 20),
+            SizedBox(height: 10),
           ],
         ),
         decoration: BoxDecoration(
