@@ -56,7 +56,7 @@ class Registro extends StatelessWidget {
                     child: Column(
                       children: [
                         TextFormField(
-                          style: TextStyle(color: Colors.white),
+                          style: TextStyle(color: Colors.black),
                           decoration: InputDecoration(
                             labelText: 'Nombre',
                             labelStyle: TextStyle(color: Colors.black),
@@ -68,7 +68,7 @@ class Registro extends StatelessWidget {
                           height: 1,
                         ),
                         TextFormField(
-                          style: TextStyle(color: Colors.white),
+                          style: TextStyle(color: Colors.black),
                           decoration: InputDecoration(
                             labelText: 'Correo Electrónico',
                             labelStyle: TextStyle(color: Colors.black),
@@ -80,7 +80,7 @@ class Registro extends StatelessWidget {
                           height: 1,
                         ),
                         TextFormField(
-                          style: TextStyle(color: Colors.white),
+                          style: TextStyle(color: Colors.black),
                           decoration: InputDecoration(
                             labelText: 'Contraseña',
                             labelStyle: TextStyle(color: Colors.black),
@@ -93,7 +93,7 @@ class Registro extends StatelessWidget {
                           height: 1,
                         ),
                         TextFormField(
-                          style: TextStyle(color: Colors.white),
+                          style: TextStyle(color: Colors.black),
                           decoration: InputDecoration(
                             labelText: 'Confirmar Contraseña',
                             labelStyle: TextStyle(color: Colors.black),
@@ -108,8 +108,7 @@ class Registro extends StatelessWidget {
                 SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () {
-                    // Aquí puedes agregar la lógica para enviar los datos
-                    // a tu backend una vez que se presiona el botón
+                    //Pendiente de agregar la lógica
                   },
                   child: Text('Enviar'),
                 ),

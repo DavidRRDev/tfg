@@ -53,7 +53,7 @@ class RecuperarContrasena extends StatelessWidget {
                 SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () {
-                    // Aquí puedes agregar la lógica para enviar la solicitud de recuperación
+                    // Pendiente de agregar la lógica
                   },
                   child: Text('Enviar'),
                 ),

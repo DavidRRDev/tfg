@@ -95,7 +95,7 @@ class Login extends StatelessWidget {
                 
                 ElevatedButton(
                   onPressed: () {
-                    // Aquí puedes agregar la lógica para iniciar sesión
+                    // Pendiente de agregar la lógica
                   },
                   child: Text('Iniciar Sesión'),
                 ),
@@ -118,7 +118,7 @@ class Login extends StatelessWidget {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => RecuperarContrasena()), // Navega a la clase RecuperarContrasena
+                      MaterialPageRoute(builder: (context) => RecuperarContrasena()), // Navega a la clase RecuperarContraseña
                     );
                   },
                   child: Text(

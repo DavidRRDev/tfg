@@ -122,8 +122,7 @@ class Bienvenida extends StatelessWidget {
                 SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () {
-                    // Aquí puedes agregar la lógica para enviar los datos
-                    // a tu backend una vez que se presiona el botón
+                    // Pendiente de agregar la lógica
                   },
                   child: Text('Confirmar'),
                 ),
