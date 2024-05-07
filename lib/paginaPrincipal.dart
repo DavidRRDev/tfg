@@ -1,5 +1,14 @@
 import 'package:flutter/material.dart';
-
+import 'package:tfg/ajuste.dart';
+import 'menu.dart'; // Importa la página de menú
+import 'perfil.dart';
+import 'cerrarSesion.dart';
+import 'ejercicios.dart'; // Importa la página de Ejercicios
+import 'invitarAmigo.dart';
+import 'kcal.dart';
+import 'ubicacion.dart';
+import 'planificacion.dart';
+import 'ajuste.dart';
 class PaginaPrincipal extends StatefulWidget {
   @override
   _PaginaPrincipalState createState() => _PaginaPrincipalState();
@@ -15,47 +24,63 @@ class _PaginaPrincipalState extends State<PaginaPrincipal> {
       body: Stack(
         fit: StackFit.expand,
         children: [
+          // Fondo de pantalla
           Image(
-            image: AssetImage('assets/fondo.jpg'), // Ruta de tu imagen de fondo
-            fit: BoxFit.cover, // Ajusta la imagen para que cubra toda la pantalla
+            image: AssetImage('assets/fondo.jpg'),
+            fit: BoxFit.cover,
           ),
-          Positioned(
-            left: 20, // Ajusta la posición izquierda de la imagen
-            top: 20, // Ajusta la posición superior de la imagen
-            child: GestureDetector(
-              onTap: () {
-                _scaffoldKey.currentState?.openDrawer(); // Abre el cajón lateral al hacer clic en la imagen
-              },
-              child: Image(
-                image: AssetImage('assets/menuRayas.png'), // Ruta de la imagen
-                width: 50, // Ancho de la imagen
-                height: 50, // Altura de la imagen
-              ),
-            ),
-          ),
-           Positioned(
-            right: 20, // Ajusta la posición derecha de la imagen
-            top: 20, // Ajusta la posición superior de la imagen
-            child: Image(
-              image: AssetImage('assets/ajusteMenu.png'), // Ruta de la imagen
-              width: 50, // Ancho de la imagen
-              height: 50, // Altura de la imagen
-            ),
-          ),
+          // Contenido central
           Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                _buildImageContainer('assets/pesaInicio.jpg'),
+                _buildImageContainer('assets/pesaInicio.jpg', () {
+                  // Navegar a EjerciciosPage al tocar la imagen de pesaInicio
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => EjerciciosPage()),
+                  );
+                }),
                 SizedBox(height: 120),
-                _buildImageContainer('assets/comidaInicio.jpg'),
-                
-                
+                _buildImageContainer('assets/comidaInicio.jpg', () {
+                   Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => KcalPage()),
+                  );
+                }),
+              ],
+            ),
+          ),
+          // AppBar personalizada
+          Positioned(
+            top: 0,
+            left: 0,
+            right: 0,
+            child: AppBar(
+              backgroundColor: Colors.transparent,
+              elevation: 0,
+              leading: IconButton(
+                icon: Image.asset('assets/menuRayas.png'),
+                onPressed: () {
+                  _scaffoldKey.currentState?.openDrawer();
+                },
+              ),
+              actions: [
+                IconButton(
+                  icon: Image.asset('assets/ajusteMenu.png'),
+                  onPressed: () {
+                    Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => AjustesPage()),
+                );
+                  },
+                ),
               ],
             ),
           ),
         ],
       ),
+      // Drawer (menú lateral)
       drawer: Drawer(
         child: Container(
           decoration: BoxDecoration(
@@ -64,27 +89,69 @@ class _PaginaPrincipalState extends State<PaginaPrincipal> {
               end: Alignment.bottomCenter,
               colors: [Colors.black, Color(0xFF5E5EF1)],
             ),
-          ), // Color de fondo del menú
-           child: Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Container(
-          alignment: Alignment.center, // Centra el contenido del container
-          padding: EdgeInsets.fromLTRB(0, 80.0, 0, 50.0),
-          child: Text(
-            'Menú', // Contenido del encabezado del menú
-            textAlign: TextAlign.center,
-            style: TextStyle(color: Colors.white, fontSize: 40.0),
           ),
-        ),
-              _buildListTile('assets/casaMenu.png', 'Inicio'),
-              _buildListTile('assets/perfil.png', 'Perfil'),
-              _buildListTile('assets/iconoPesa.png', 'Añadir ejercicio'),
-              _buildListTile('assets/manzana.png', 'Calcular Kcal'),
-              _buildListTile('assets/calendario.png', 'Planificación'),
-              _buildListTile('assets/ubicacion.png', 'Ubicación'),
-              _buildListTile('assets/amigoMenu.png', 'Invitar Amigo'),
-              _buildListTile('assets/cerrarSesion.png', 'Cerrar sesión'),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              // Encabezado del menú
+              Container(
+                alignment: Alignment.center,
+                padding: EdgeInsets.fromLTRB(0, 80.0, 0, 50.0),
+                child: Text(
+                  'Menú',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: Colors.white, fontSize: 40.0),
+                ),
+              ),
+              // Opciones del menú
+              _buildListTile('assets/casaMenu.png', 'Inicio', () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => MenuPage()),
+                );
+              }),
+              _buildListTile('assets/perfil.png', 'Perfil', () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => PerfilPage()),
+                );
+              }),
+              _buildListTile('assets/iconoPesa.png', 'Añadir ejercicio', () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => EjerciciosPage()),
+                );
+              }),
+              _buildListTile('assets/manzana.png', 'Calcular Kcal', () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => KcalPage()),
+                );
+              }),
+              _buildListTile('assets/calendario.png', 'Planificación', () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => PlanificacionPage()),
+                );
+              }),
+              _buildListTile('assets/ubicacion.png', 'Ubicación', () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => UbicacionPage()),
+                );
+              }),
+              _buildListTile('assets/amigoMenu.png', 'Invitar Amigo', () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => InvitarAmigoPage()),
+                );
+              }),
+              _buildListTile('assets/cerrarSesion.png', 'Cerrar sesión', () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CerrarSesionPage()),
+                );
+              }),
             ],
           ),
         ),
@@ -92,38 +159,45 @@ class _PaginaPrincipalState extends State<PaginaPrincipal> {
     );
   }
 
-  Widget _buildImageContainer(String imagePath) {
-    return Container(
-      width: 350, // Ancho deseado de la imagen
-      height: 180, // Altura deseada de la imagen (más larga)
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(30.0), // Radio de borde redondeado
-        child: Image(
-          image: AssetImage(imagePath),
-          fit: BoxFit.cover, // Ajusta la imagen dentro del contenedor
+  // Método para construir un contenedor de imagen con onTap
+  Widget _buildImageContainer(String imagePath, VoidCallback onTap) {
+    return GestureDetector(
+      onTap: onTap, // Llama a la función onTap cuando se toca la imagen
+      child: Container(
+        width: 350,
+        height: 180,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(30.0),
+          color: Colors.white.withOpacity(0.5), // Color de fondo con opacidad
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(30.0),
+          child: Image(
+            image: AssetImage(imagePath),
+            fit: BoxFit.cover,
+          ),
         ),
       ),
     );
   }
 
-  Widget _buildListTile(String leadingImagePath, String title) {
+  // Método para construir un elemento de ListTile para el menú
+  Widget _buildListTile(String leadingImagePath, String title, VoidCallback onTap) {
     return Column(
       children: [
         ListTile(
-          contentPadding: EdgeInsets.symmetric(horizontal: 16.0), // Espaciado interno del ListTile
+          contentPadding: EdgeInsets.symmetric(horizontal: 16.0),
           leading: Padding(
             padding: EdgeInsets.only(right: 8.0),
-            child: Image.asset(leadingImagePath, width: 60, height: 60), // Imagen a la izquierda
+            child: Image.asset(leadingImagePath, width: 60, height: 60),
           ),
           title: Text(
-            title, // Texto de la opción del menú
-            style: TextStyle(color: Colors.white), // Color blanco para el texto
+            title,
+            style: TextStyle(color: Colors.white),
           ),
-          onTap: () {
-            // Acción al tocar la opción del menú
-          },
+          onTap: onTap, // Ejecutar la acción al tocar el ListTile
         ),
-       Divider(color: Colors.transparent),// Separador entre elementos de la lista
+        Divider(color: Colors.transparent), // Separador entre elementos de la lista
       ],
     );
   }
