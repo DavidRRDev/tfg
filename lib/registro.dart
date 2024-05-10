@@ -21,12 +21,17 @@ class Registro extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset:
+          false, // Evitar desbordamiento de píxeles cuando el teclado está presente
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [Color(0xFF000000), Color(0xFF1414B8)],
+            colors: [
+              Colors.black,
+              Colors.blueAccent,
+            ],
           ),
         ),
         child: Center(
@@ -48,7 +53,7 @@ class Registro extends StatelessWidget {
                 SizedBox(height: 20),
                 Container(
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: Colors.white.withOpacity(0.2),
                     borderRadius: BorderRadius.circular(12.0),
                   ),
                   child: Padding(
@@ -56,10 +61,10 @@ class Registro extends StatelessWidget {
                     child: Column(
                       children: [
                         TextFormField(
-                          style: TextStyle(color: Colors.black),
+                          style: TextStyle(color: Colors.white),
                           decoration: InputDecoration(
                             labelText: 'Nombre',
-                            labelStyle: TextStyle(color: Colors.black),
+                            labelStyle: TextStyle(color: Colors.white),
                             border: InputBorder.none,
                           ),
                         ),
@@ -68,10 +73,10 @@ class Registro extends StatelessWidget {
                           height: 1,
                         ),
                         TextFormField(
-                          style: TextStyle(color: Colors.black),
+                          style: TextStyle(color: Colors.white),
                           decoration: InputDecoration(
                             labelText: 'Correo Electrónico',
-                            labelStyle: TextStyle(color: Colors.black),
+                            labelStyle: TextStyle(color: Colors.white),
                             border: InputBorder.none,
                           ),
                         ),
@@ -80,10 +85,10 @@ class Registro extends StatelessWidget {
                           height: 1,
                         ),
                         TextFormField(
-                          style: TextStyle(color: Colors.black),
+                          style: TextStyle(color: Colors.white),
                           decoration: InputDecoration(
                             labelText: 'Contraseña',
-                            labelStyle: TextStyle(color: Colors.black),
+                            labelStyle: TextStyle(color: Colors.white),
                             border: InputBorder.none,
                           ),
                           obscureText: true,
@@ -93,10 +98,10 @@ class Registro extends StatelessWidget {
                           height: 1,
                         ),
                         TextFormField(
-                          style: TextStyle(color: Colors.black),
+                          style: TextStyle(color: Colors.white),
                           decoration: InputDecoration(
                             labelText: 'Confirmar Contraseña',
-                            labelStyle: TextStyle(color: Colors.black),
+                            labelStyle: TextStyle(color: Colors.white),
                             border: InputBorder.none,
                           ),
                           obscureText: true,
@@ -114,7 +119,7 @@ class Registro extends StatelessWidget {
                 ),
                 SizedBox(height: 10),
                 Image.asset(
-                  'assets/drj.png', 
+                  'assets/drj.png',
                   height: 200,
                   width: 200,
                 ),
