@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'recuperarContrasena.dart'; // Importa la clase RecuperarContrasena
 import 'registro.dart'; // Importa la clase Registro desde el archivo registro.dart
-
+import 'paginaPrincipal.dart';
 void main() {
   runApp(MyApp());
 }
@@ -95,10 +95,14 @@ class Login extends StatelessWidget {
                 
                 ElevatedButton(
                   onPressed: () {
-                    // Aquí puedes agregar la lógica para iniciar sesión
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => PaginaPrincipal()),
+                    );
                   },
                   child: Text('Iniciar Sesión'),
                 ),
+
                 SizedBox(height: 10),
                 GestureDetector(
                   onTap: () {
