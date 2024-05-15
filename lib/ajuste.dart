@@ -7,15 +7,24 @@ class AjustesPage extends StatefulWidget {
 
 class _AjustesPageState extends State<AjustesPage> {
   bool _notificacionesActivas = true; // Estado inicial del interruptor
+  String _idiomaSeleccionado = 'Español'; // Idioma seleccionado
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Ajustes'),
+        backgroundColor: Colors.transparent, // Color de fondo del AppBar
       ),
+      
       body: Container(
-        color: Colors.indigoAccent, // Color de fondo morado-azul
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [Colors.black, Color(0xFF5E5EF1)],
+          ),
+        ),
         child: Padding(
           padding: EdgeInsets.all(16.0),
           child: Column(
@@ -60,24 +69,7 @@ class _AjustesPageState extends State<AjustesPage> {
                 ),
                 trailing: Icon(Icons.keyboard_arrow_right, color: Colors.white), // Color del icono en blanco
                 onTap: () {
-                  // Acción al tocar la opción de idioma
-                  // Por ejemplo, abrir una pantalla de selección de idioma
-                },
-              ),
-              Divider(color: Colors.white), // Color del separador en blanco
-              ListTile(
-                title: Text(
-                  'Tema',
-                  style: TextStyle(color: Colors.white), // Color del texto en blanco
-                ),
-                subtitle: Text(
-                  'Seleccionar tema de la aplicación',
-                  style: TextStyle(color: Colors.white70), // Color del texto en blanco (más claro)
-                ),
-                trailing: Icon(Icons.keyboard_arrow_right, color: Colors.white), // Color del icono en blanco
-                onTap: () {
-                  // Acción al tocar la opción de tema
-                  // Por ejemplo, abrir una pantalla de selección de tema
+                  _mostrarDialogoIdioma(); // Mostrar diálogo de selección de idioma
                 },
               ),
               Divider(color: Colors.white), // Color del separador en blanco
@@ -91,8 +83,7 @@ class _AjustesPageState extends State<AjustesPage> {
                   style: TextStyle(color: Colors.white70), // Color del texto en blanco (más claro)
                 ),
                 onTap: () {
-                  // Acción al tocar la opción de borrar datos
-                  // Por ejemplo, mostrar un diálogo de confirmación
+                  _mostrarDialogoConfirmacion(); // Mostrar diálogo de confirmación para borrar datos
                 },
               ),
               Divider(color: Colors.white), // Color del separador en blanco
@@ -100,6 +91,73 @@ class _AjustesPageState extends State<AjustesPage> {
           ),
         ),
       ),
+    );
+  }
+
+  void _mostrarDialogoIdioma() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Seleccionar idioma'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ListTile(
+                title: Text('Español'),
+                onTap: () {
+                  setState(() {
+                    _idiomaSeleccionado = 'Español';
+                  });
+                  Navigator.of(context).pop();
+                },
+                trailing: _idiomaSeleccionado == 'Español'
+                    ? Icon(Icons.check, color: Colors.blue)
+                    : null,
+              ),
+              ListTile(
+                title: Text('Inglés'),
+                onTap: () {
+                  setState(() {
+                    _idiomaSeleccionado = 'Inglés';
+                  });
+                  Navigator.of(context).pop();
+                },
+                trailing: _idiomaSeleccionado == 'Inglés'
+                    ? Icon(Icons.check, color: Colors.blue)
+                    : null,
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  void _mostrarDialogoConfirmacion() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Confirmación'),
+          content: Text('¿Seguro que desea eliminar todos los datos registrados?'),
+          actions: [
+            TextButton(
+              child: Text('Cancelar'),
+              onPressed: () {
+                Navigator.of(context).pop(); // Cerrar el diálogo sin hacer nada
+              },
+            ),
+            TextButton(
+              child: Text('Aceptar'),
+              onPressed: () {
+                // Aquí puedes agregar la lógica para eliminar los datos
+                Navigator.of(context).pop(); // Cerrar el diálogo después de aceptar
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }
