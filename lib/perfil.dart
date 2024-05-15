@@ -1,21 +1,61 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'editarPerfil.dart';
 
-class PerfilPage extends StatelessWidget {
+class PerfilPage extends StatefulWidget {
+  @override
+  _PerfilPageState createState() => _PerfilPageState();
+}
+
+class _PerfilPageState extends State<PerfilPage> {
+  late String nombreUsuario;
+  late String correoElectronico;
+  late String direccion;
+  late int edad;
+  late double peso;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserData();
+  }
+
+  Future<void> _loadUserData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      nombreUsuario = prefs.getString('nombreUsuario') ?? 'Nombre de Usuario';
+      correoElectronico = prefs.getString('correoElectronico') ?? 'usuario@example.com';
+      direccion = prefs.getString('direccion') ?? '123 Calle Principal, Ciudad';
+      edad = prefs.getInt('edad') ?? 30;
+      peso = prefs.getDouble('peso') ?? 70.5;
+    });
+  }
+
+  Future<void> _saveUserData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('nombreUsuario', nombreUsuario);
+    await prefs.setString('correoElectronico', correoElectronico);
+    await prefs.setString('direccion', direccion);
+    await prefs.setInt('edad', edad);
+    await prefs.setDouble('peso', peso);
+  }
+
   @override
   Widget build(BuildContext context) {
-    // Datos de ejemplo del usuario (puedes reemplazar con datos reales)
-    String nombreUsuario = 'Nombre de Usuario';
-    String correoElectronico = 'usuario@example.com';
-    String direccion = '123 Calle Principal, Ciudad';
-    int edad = 30;
-    double peso = 70.5;
-
     return Scaffold(
       appBar: AppBar(
         title: Text('Perfil'),
+        backgroundColor: Colors.transparent,
+        elevation: 0, // Sin sombra en la AppBar
       ),
       body: Container(
-        color: Colors.indigoAccent, // Color de fondo morado-azul
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [Colors.black, Color(0xFF5E5EF1)],
+          ),
+        ),
         child: Center(
           child: ListView(
             padding: EdgeInsets.all(16.0),
@@ -27,7 +67,7 @@ class PerfilPage extends StatelessWidget {
                 ),
                 leading: CircleAvatar(
                   radius: 30.0,
-                  backgroundImage: AssetImage('assets/avatar.jpg'), // Foto de perfil del usuario
+                  backgroundImage: AssetImage('assets/avatar.png'),
                 ),
               ),
               _buildPerfilInfo('Nombre', nombreUsuario),
@@ -37,8 +77,30 @@ class PerfilPage extends StatelessWidget {
               _buildPerfilInfo('Peso', peso.toStringAsFixed(1) + ' kg'),
               SizedBox(height: 20.0),
               ElevatedButton(
-                onPressed: () {
-                  // Acción para editar perfil
+                onPressed: () async {
+                  final result = await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => EditarPerfilPage(
+                        nombreUsuario: nombreUsuario,
+                        correoElectronico: correoElectronico,
+                        direccion: direccion,
+                        edad: edad,
+                        peso: peso,
+                      ),
+                    ),
+                  );
+
+                  if (result != null) {
+                    setState(() {
+                      nombreUsuario = result['nombreUsuario'];
+                      correoElectronico = result['correoElectronico'];
+                      direccion = result['direccion'];
+                      edad = result['edad'];
+                      peso = result['peso'];
+                      _saveUserData();
+                    });
+                  }
                 },
                 child: Text('Editar Perfil'),
               ),
@@ -49,7 +111,6 @@ class PerfilPage extends StatelessWidget {
     );
   }
 
-  // Método para construir un ListTile de información de perfil
   Widget _buildPerfilInfo(String label, String value) {
     return ListTile(
       title: Text(

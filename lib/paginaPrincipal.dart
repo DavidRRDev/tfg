@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:tfg/ajuste.dart';
-import 'menu.dart'; // Importa la página de menú
 import 'perfil.dart';
 import 'cerrarSesion.dart';
 import 'ejercicios.dart'; // Importa la página de Ejercicios
 import 'invitarAmigo.dart';
-import 'kcal.dart';
 import 'ubicacion.dart';
 import 'planificacion.dart';
 import 'ajuste.dart';
@@ -42,10 +39,10 @@ class _PaginaPrincipalState extends State<PaginaPrincipal> {
                   );
                 }),
                 SizedBox(height: 120),
-                _buildImageContainer('assets/comidaInicio.jpg', () {
+                _buildImageContainer('assets/calendarioInicio.jpg', () {
                    Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => KcalPage()),
+                    MaterialPageRoute(builder: (context) => PlanificacionPage()),
                   );
                 }),
               ],
@@ -107,7 +104,7 @@ class _PaginaPrincipalState extends State<PaginaPrincipal> {
               _buildListTile('assets/casaMenu.png', 'Inicio', () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => MenuPage()),
+                  MaterialPageRoute(builder: (context) => PaginaPrincipal()),
                 );
               }),
               _buildListTile('assets/perfil.png', 'Perfil', () {
@@ -120,12 +117,6 @@ class _PaginaPrincipalState extends State<PaginaPrincipal> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => EjerciciosPage()),
-                );
-              }),
-              _buildListTile('assets/manzana.png', 'Calcular Kcal', () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => KcalPage()),
                 );
               }),
               _buildListTile('assets/calendario.png', 'Planificación', () {
@@ -186,9 +177,9 @@ class _PaginaPrincipalState extends State<PaginaPrincipal> {
     return Column(
       children: [
         ListTile(
-          contentPadding: EdgeInsets.symmetric(horizontal: 16.0),
+          contentPadding: EdgeInsets.symmetric(horizontal: 20.0),
           leading: Padding(
-            padding: EdgeInsets.only(right: 8.0),
+            padding: EdgeInsets.only(right: 10.0),
             child: Image.asset(leadingImagePath, width: 60, height: 60),
           ),
           title: Text(
