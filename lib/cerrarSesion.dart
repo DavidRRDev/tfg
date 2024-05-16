@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'login.dart';
 
 class CerrarSesionPage extends StatelessWidget {
   @override
@@ -34,9 +35,7 @@ class CerrarSesionPage extends StatelessWidget {
                 SizedBox(height: 20.0),
                 ElevatedButton(
                   onPressed: () {
-                    // Acción para cerrar sesión
-                    // Aquí puedes agregar la lógica para cerrar la sesión actual
-                    Navigator.of(context).pop(); // Regresar a la pantalla anterior
+                    _showLogoutConfirmationDialog(context);
                   },
                   child: Text('Cerrar Sesión'),
                 ),
@@ -45,6 +44,35 @@ class CerrarSesionPage extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+
+  void _showLogoutConfirmationDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Cerrar Sesión'),
+          content: Text('¿Estás seguro de que deseas cerrar sesión?'),
+          actions: [
+            TextButton(
+              child: Text('Cancelar'),
+              onPressed: () {
+                Navigator.of(context).pop(); // Cerrar el diálogo
+              },
+            ),
+            TextButton(
+              child: Text('Aceptar'),
+              onPressed: () {
+                Navigator.of(context).pop(); // Cerrar el diálogo
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(builder: (context) => Login()),
+                ); // Redirigir a la página de login
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }

@@ -6,6 +6,7 @@ import 'invitarAmigo.dart';
 import 'ubicacion.dart';
 import 'planificacion.dart';
 import 'ajuste.dart';
+
 class PaginaPrincipal extends StatefulWidget {
   @override
   _PaginaPrincipalState createState() => _PaginaPrincipalState();
@@ -31,7 +32,7 @@ class _PaginaPrincipalState extends State<PaginaPrincipal> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                _buildImageContainer('assets/pesaInicio.jpg', () {
+                _buildImageContainerWithIcon('assets/pesaInicio.jpg', () {
                   // Navegar a EjerciciosPage al tocar la imagen de pesaInicio
                   Navigator.push(
                     context,
@@ -146,6 +147,47 @@ class _PaginaPrincipalState extends State<PaginaPrincipal> {
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  // Método para construir un contenedor de imagen con onTap y un icono de "+"
+  Widget _buildImageContainerWithIcon(String imagePath, VoidCallback onTap) {
+    return GestureDetector(
+      onTap: onTap, // Llama a la función onTap cuando se toca la imagen
+      child: Stack(
+        children: [
+          Container(
+            width: 350,
+            height: 180,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(30.0),
+              color: Colors.white.withOpacity(0.5), // Color de fondo con opacidad
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(30.0),
+              child: Image(
+                image: AssetImage(imagePath),
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+          Positioned(
+            bottom: 8,
+            right: 8,
+            child: Container(
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: Colors.white,
+              ),
+              child: Icon(
+                Icons.add,
+                color: Colors.black,
+                size: 24.0,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

@@ -39,22 +39,12 @@ class _PlanificacionPageState extends State<PlanificacionPage> {
       extendBodyBehindAppBar: true,
       body: Stack(
         children: [
-          Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [Colors.black, Color(0xFF5E5EF1)], // Colores del gradiente
-              ),
-            ),
-          ),
           Center(
             child: Container(
-              width: MediaQuery.of(context).size.width * 0.7, // Ancho de la imagen
-              height: MediaQuery.of(context).size.height * 0.4, // Altura de la imagen
+             
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage('assets/logo.png'), // Ruta de la imagen de fondo
+                  image: AssetImage('assets/fondo.jpg'), // Ruta de la imagen de fondo
                   fit: BoxFit.cover, // Ajustar la imagen
                 ),
               ),
