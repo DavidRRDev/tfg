@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'paginaPrincipal.dart';
 
 class UbicacionPage extends StatefulWidget {
   @override
@@ -28,19 +27,13 @@ class _UbicacionPageState extends State<UbicacionPage> {
       if (permission == LocationPermission.denied) {
         permission = await Geolocator.requestPermission();
         if (permission == LocationPermission.denied) {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => PaginaPrincipal()),
-          );
+          // Manejar el caso cuando el permiso es denegado
           return;
         }
       }
 
       if (permission == LocationPermission.deniedForever) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => PaginaPrincipal()),
-        );
+        // Manejar el caso cuando el permiso es denegado permanentemente
         return;
       }
 
@@ -55,8 +48,7 @@ class _UbicacionPageState extends State<UbicacionPage> {
     }
   }
 
-  Future<void> _launchMap() async {
-    final url = 'https://www.google.com/maps/search/?api=1&query=gimnasio';
+  Future<void> _launchMap(String url) async {
     try {
       if (await canLaunch(url)) {
         await launch(url);
@@ -65,19 +57,6 @@ class _UbicacionPageState extends State<UbicacionPage> {
       }
     } catch (e) {
       print('Error al lanzar el mapa: $e');
-    }
-  }
-
-  Future<void> _launchGymSearch() async {
-    final url = 'https://www.google.com/maps/search/?api=1&query=GYM';
-    try {
-      if (await canLaunch(url)) {
-        await launch(url);
-      } else {
-        throw 'No se puede abrir Google Maps.';
-      }
-    } catch (e) {
-      print('Error al abrir Google Maps: $e');
     }
   }
 
@@ -91,10 +70,9 @@ class _UbicacionPageState extends State<UbicacionPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            
             ElevatedButton(
               onPressed: () {
-                _launchGymSearch();
+                _launchMap('https://maps.app.goo.gl/Apfy8FUoiPtKmimW8');
               },
               child: Text('Buscar GYM en Google Maps'),
             ),
@@ -103,7 +81,12 @@ class _UbicacionPageState extends State<UbicacionPage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          _launchMap();
+          if (_currentPosition != null) {
+            final url = 'https://www.google.com/maps/search/?api=1&query=${_currentPosition!.latitude},${_currentPosition!.longitude}';
+            _launchMap(url);
+          } else {
+            print('Ubicación no disponible.');
+          }
         },
         child: Icon(Icons.location_on),
       ),
