@@ -1,10 +1,17 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart'; // Importa Firebase Core
+import 'package:tfg/login.dart';
+import 'firebase_options.dart'; // Asegúrate de importar las opciones de configuración de Firebase
 
-import 'paginaPrincipal.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding
+      .ensureInitialized(); // Asegura que los Widgets de Flutter estén inicializados
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
   runApp(const MyApp());
 }
 
@@ -43,7 +50,7 @@ class _MyHomePageState extends State<MyHomePage> {
       // Navigate to SecondScreen after the delay
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => PaginaPrincipal()),
+        MaterialPageRoute(builder: (context) => Login()),
       );
     });
   }
@@ -51,27 +58,26 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        height: max(1000, 2000),
-        child:Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Image.asset('assets/drj.png'),
-            SizedBox(height: 10),
+        body: Container(
+      height: max(1000, 2000),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Image.asset('assets/drj.png'),
+          SizedBox(height: 10),
+        ],
+      ),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            Color(0xFF000000), // Black background
+            Color(0xFF1414B8), // Blue stripe in the middle
+            Color(0xFF000000), // Black background
           ],
+          begin: Alignment.topCenter, // Gradient starts from the top center
+          end: Alignment.bottomCenter, // Gradient ends at the bottom center
         ),
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              Color(0xFF000000), // Black background
-              Color(0xFF1414B8), // Blue stripe in the middle
-              Color(0xFF000000), // Black background
-            ],
-            begin: Alignment.topCenter, // Gradient starts from the top center
-            end: Alignment.bottomCenter, // Gradient ends at the bottom center
-          ),
-        ),
-      )
-    );
+      ),
+    ));
   }
 }
