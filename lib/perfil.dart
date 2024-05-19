@@ -1,8 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'firebase_service.dart'; // Asegúrate de importar el servicio
+import 'firebase_service.dart';
 import 'editarPerfil.dart';
 
 class PerfilPage extends StatefulWidget {
@@ -14,9 +13,11 @@ class _PerfilPageState extends State<PerfilPage> {
   String nombreUsuario = 'Nombre de Usuario';
   String apellidosUsuario = 'Apellidos del Usuario';
   String correoElectronico = 'usuario@example.com';
-  String direccion = '123 Calle Principal, Ciudad';
-  int edad = 30;
-  double peso = 70.5;
+  String edad = 'Edad';
+  String altura = 'Altura';
+  String peso = 'Peso';
+  String sexo = 'Sexo';
+  String userId = '';
 
   @override
   void initState() {
@@ -26,45 +27,31 @@ class _PerfilPageState extends State<PerfilPage> {
 
   Future<void> _loadUserData() async {
     await Firebase.initializeApp();
-
     User? user = FirebaseAuth.instance.currentUser;
-    if (user != null) {
-      String userId = user.uid;
-      String userEmail = user.email ?? 'usuario@example.com';
-      Map<String, dynamic>? userData = await getUsuario(userId);
 
+    if (user != null) {
+      userId = user.uid;
+      print("User ID: $userId");
+
+      Map<String, dynamic>? userData = await getUsuario(userId);
       print("Datos del usuario desde Firestore: $userData");
 
       if (userData != null) {
         setState(() {
           nombreUsuario = userData['nombre'] ?? 'Nombre de Usuario';
           apellidosUsuario = userData['apellidos'] ?? 'Apellidos del Usuario';
-          correoElectronico = userEmail;
-          direccion = userData['direccion'] ?? '123 Calle Principal, Ciudad';
-          edad = userData['edad'] ?? 30;
-          peso = userData['peso'] ?? 70.5;
+          correoElectronico = user.email ?? 'usuario@example.com';
+          edad = userData['edad'] ?? 'Edad';
+          altura = userData['altura'] ?? 'Altura';
+          peso = userData['peso'] ?? 'Peso';
+          sexo = userData['sexo'] ?? 'Sexo';
         });
       } else {
-        setState(() {
-          nombreUsuario = 'Nombre de Usuario';
-          apellidosUsuario = 'Apellidos del Usuario';
-          correoElectronico = userEmail;
-          direccion = '123 Calle Principal, Ciudad';
-          edad = 30;
-          peso = 70.5;
-        });
+        print("El documento del usuario no existe en Firestore.");
       }
+    } else {
+      print("El usuario no ha iniciado sesión.");
     }
-  }
-
-  Future<void> _saveUserData() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString('nombreUsuario', nombreUsuario);
-    await prefs.setString('apellidosUsuario', apellidosUsuario);
-    await prefs.setString('correoElectronico', correoElectronico);
-    await prefs.setString('direccion', direccion);
-    await prefs.setInt('edad', edad);
-    await prefs.setDouble('peso', peso);
   }
 
   @override
@@ -100,10 +87,10 @@ class _PerfilPageState extends State<PerfilPage> {
               _buildPerfilInfo('Nombre', nombreUsuario),
               _buildPerfilInfo('Apellidos', apellidosUsuario),
               _buildPerfilInfo('Correo Electrónico', correoElectronico),
-              _buildPerfilInfo('Dirección', direccion),
-              _buildPerfilInfo('Edad', edad.toString()),
-              _buildPerfilInfo('Peso', peso.toStringAsFixed(1) + ' kg'),
-              SizedBox(height: 20.0),
+              _buildPerfilInfo('Edad', edad),
+              _buildPerfilInfo('Altura', altura),
+              _buildPerfilInfo('Peso', peso),
+              _buildPerfilInfo('Sexo', sexo),
               ElevatedButton(
                 onPressed: () async {
                   final result = await Navigator.push(
@@ -113,9 +100,10 @@ class _PerfilPageState extends State<PerfilPage> {
                         nombreUsuario: nombreUsuario,
                         apellidosUsuario: apellidosUsuario,
                         correoElectronico: correoElectronico,
-                        direccion: direccion,
                         edad: edad,
+                        altura: altura,
                         peso: peso,
+                        sexo: sexo,
                       ),
                     ),
                   );
@@ -125,10 +113,20 @@ class _PerfilPageState extends State<PerfilPage> {
                       nombreUsuario = result['nombreUsuario'];
                       apellidosUsuario = result['apellidosUsuario'];
                       correoElectronico = result['correoElectronico'];
-                      direccion = result['direccion'];
                       edad = result['edad'];
+                      altura = result['altura'];
                       peso = result['peso'];
-                      _saveUserData();
+                      sexo = result['sexo'];
+
+                      updateUsuario(userId, {
+                        'nombre': nombreUsuario,
+                        'apellidos': apellidosUsuario,
+                        'correo': correoElectronico,
+                        'edad': edad,
+                        'altura': altura,
+                        'peso': peso,
+                        'sexo': sexo,
+                      });
                     });
                   }
                 },

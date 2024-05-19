@@ -4,17 +4,19 @@ class EditarPerfilPage extends StatefulWidget {
   final String nombreUsuario;
   final String apellidosUsuario;
   final String correoElectronico;
-  final String direccion;
-  final int edad;
-  final double peso;
+  final String edad;
+  final String altura;
+  final String peso;
+  final String sexo;
 
   EditarPerfilPage({
     required this.nombreUsuario,
     required this.apellidosUsuario,
     required this.correoElectronico,
-    required this.direccion,
     required this.edad,
+    required this.altura,
     required this.peso,
+    required this.sexo,
   });
 
   @override
@@ -25,9 +27,10 @@ class _EditarPerfilPageState extends State<EditarPerfilPage> {
   late TextEditingController _nombreController;
   late TextEditingController _apellidosController;
   late TextEditingController _correoController;
-  late TextEditingController _direccionController;
   late TextEditingController _edadController;
+  late TextEditingController _alturaController;
   late TextEditingController _pesoController;
+  late TextEditingController _sexoController;
 
   @override
   void initState() {
@@ -35,9 +38,10 @@ class _EditarPerfilPageState extends State<EditarPerfilPage> {
     _nombreController = TextEditingController(text: widget.nombreUsuario);
     _apellidosController = TextEditingController(text: widget.apellidosUsuario);
     _correoController = TextEditingController(text: widget.correoElectronico);
-    _direccionController = TextEditingController(text: widget.direccion);
-    _edadController = TextEditingController(text: widget.edad.toString());
-    _pesoController = TextEditingController(text: widget.peso.toStringAsFixed(1));
+    _edadController = TextEditingController(text: widget.edad);
+    _alturaController = TextEditingController(text: widget.altura);
+    _pesoController = TextEditingController(text: widget.peso);
+    _sexoController = TextEditingController(text: widget.sexo);
   }
 
   @override
@@ -45,9 +49,10 @@ class _EditarPerfilPageState extends State<EditarPerfilPage> {
     _nombreController.dispose();
     _apellidosController.dispose();
     _correoController.dispose();
-    _direccionController.dispose();
     _edadController.dispose();
+    _alturaController.dispose();
     _pesoController.dispose();
+    _sexoController.dispose();
     super.dispose();
   }
 
@@ -57,7 +62,7 @@ class _EditarPerfilPageState extends State<EditarPerfilPage> {
       appBar: AppBar(
         title: Text('Editar Perfil'),
         backgroundColor: Colors.transparent,
-        elevation: 0, // Sin sombra en el AppBar
+        elevation: 0,
       ),
       body: Container(
         decoration: BoxDecoration(
@@ -78,15 +83,16 @@ class _EditarPerfilPageState extends State<EditarPerfilPage> {
                 ),
                 leading: CircleAvatar(
                   radius: 30.0,
-                  backgroundImage: AssetImage('assets/avatar.png'), // Foto de perfil del usuario
+                  backgroundImage: AssetImage('assets/avatar.png'),
                 ),
               ),
               _buildEditablePerfilInfo('Nombre', _nombreController),
               _buildEditablePerfilInfo('Apellidos', _apellidosController),
               _buildEditablePerfilInfo('Correo Electrónico', _correoController),
-              _buildEditablePerfilInfo('Dirección', _direccionController),
-              _buildEditablePerfilInfo('Edad', _edadController, keyboardType: TextInputType.number),
-              _buildEditablePerfilInfo('Peso', _pesoController, keyboardType: TextInputType.number),
+              _buildEditablePerfilInfo('Edad', _edadController),
+              _buildEditablePerfilInfo('Altura', _alturaController),
+              _buildEditablePerfilInfo('Peso', _pesoController),
+              _buildEditablePerfilInfo('Sexo', _sexoController),
               SizedBox(height: 20.0),
               ElevatedButton(
                 onPressed: () {
@@ -94,12 +100,13 @@ class _EditarPerfilPageState extends State<EditarPerfilPage> {
                     'nombreUsuario': _nombreController.text,
                     'apellidosUsuario': _apellidosController.text,
                     'correoElectronico': _correoController.text,
-                    'direccion': _direccionController.text,
-                    'edad': int.parse(_edadController.text),
-                    'peso': double.parse(_pesoController.text),
+                    'edad': _edadController.text,
+                    'altura': _alturaController.text,
+                    'peso': _pesoController.text,
+                    'sexo': _sexoController.text,
                   });
                 },
-                child: Text('Guardar'),
+                child: Text('Guardar Cambios'),
               ),
             ],
           ),
@@ -108,7 +115,7 @@ class _EditarPerfilPageState extends State<EditarPerfilPage> {
     );
   }
 
-  Widget _buildEditablePerfilInfo(String label, TextEditingController controller, {TextInputType keyboardType = TextInputType.text}) {
+  Widget _buildEditablePerfilInfo(String label, TextEditingController controller) {
     return ListTile(
       title: Text(
         label,
@@ -116,12 +123,10 @@ class _EditarPerfilPageState extends State<EditarPerfilPage> {
       ),
       subtitle: TextField(
         controller: controller,
-        keyboardType: keyboardType,
         style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold, color: Colors.white),
         decoration: InputDecoration(
-          border: UnderlineInputBorder(),
           enabledBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: Colors.white70),
+            borderSide: BorderSide(color: Colors.white),
           ),
           focusedBorder: UnderlineInputBorder(
             borderSide: BorderSide(color: Colors.white),
@@ -130,17 +135,4 @@ class _EditarPerfilPageState extends State<EditarPerfilPage> {
       ),
     );
   }
-}
-
-void main() {
-  runApp(MaterialApp(
-    home: EditarPerfilPage(
-      nombreUsuario: 'Nombre de Usuario',
-      apellidosUsuario: 'Apellidos del Usuario',
-      correoElectronico: 'usuario@example.com',
-      direccion: '123 Calle Principal, Ciudad',
-      edad: 30,
-      peso: 70.5,
-    ),
-  ));
 }

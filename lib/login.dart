@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:tfg/paginaPrincipal.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'paginaPrincipal.dart';
+import 'datosUsuario.dart';
 import 'recuperarContrasena.dart';
 import 'registro.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 void main() {
   runApp(MyApp());
@@ -18,7 +20,7 @@ class MyApp extends StatelessWidget {
       ),
       home: Login(),
       routes: {
-        '/pagina_principal': (context) => PaginaPrincipal(), // Definir la ruta a la página principal
+        '/pagina_principal': (context) => PaginaPrincipal(),
       },
     );
   }
@@ -204,26 +206,38 @@ class _LoginState extends State<Login> {
   Future<void> _signInWithEmailAndPassword() async {
     try {
       UserCredential userCredential =
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
+          await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: _emailController.text,
         password: _passwordController.text,
       );
-      // Verificamos si el usuario está autenticado
       if (userCredential.user != null) {
-        // Aquí puedes navegar a la siguiente pantalla o realizar otras acciones después de iniciar sesión correctamente.
         print('Inicio de sesión exitoso: ${userCredential.user!.uid}');
-        // Navegar a la página principal después del inicio de sesión exitoso
+        _checkUserData(userCredential.user!.uid);
+      }
+    } catch (e) {
+      print('Error al iniciar sesión: $e');
+    }
+  }
+
+  Future<void> _checkUserData(String uid) async {
+    try {
+      final userData = await FirebaseFirestore.instance
+          .collection('datosDeUsuario')
+          .doc(uid)
+          .get();
+      if (userData.exists) {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => PaginaPrincipal()),
         );
+      } else {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => DatosUsuario()),
+        );
       }
     } catch (e) {
-      print('Error al iniciar sesión: $e');
-      // Aquí puedes mostrar un mensaje de error al usuario si el inicio de sesión falla.
+      print('Error al comprobar datos de usuario: $e');
     }
   }
 }
-
-// Página principal después de iniciar sesión exitosamente
-
