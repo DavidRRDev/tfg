@@ -1,11 +1,35 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class RecuperarContrasena extends StatelessWidget {
+  final TextEditingController _emailController = TextEditingController();
+
+  // Función para enviar la solicitud de restablecimiento de contraseña
+  Future<void> _resetPassword(BuildContext context) async {
+    try {
+      await FirebaseAuth.instance.sendPasswordResetEmail(
+        email: _emailController.text,
+      );
+      // Mostrar mensaje de éxito
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Se ha enviado un correo de restablecimiento de contraseña a ${_emailController.text}'),
+        ),
+      );
+    } catch (e) {
+      // Mostrar mensaje de error
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Error: ${e.toString()}'),
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset:
-          false, // Evitar desbordamiento de píxeles cuando el teclado está presente
+      resizeToAvoidBottomInset: false,
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
@@ -41,6 +65,7 @@ class RecuperarContrasena extends StatelessWidget {
                     child: Column(
                       children: [
                         TextFormField(
+                          controller: _emailController,
                           style: TextStyle(color: Colors.white),
                           decoration: InputDecoration(
                             labelText: 'Correo Electrónico',
@@ -55,7 +80,7 @@ class RecuperarContrasena extends StatelessWidget {
                 SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () {
-                    // Pendiente de agregar la lógica
+                    _resetPassword(context);
                   },
                   child: Text('Enviar'),
                 ),
