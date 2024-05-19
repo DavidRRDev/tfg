@@ -33,12 +33,11 @@ class _RegistroState extends State<Registro> {
   final TextEditingController _nombreController = TextEditingController();
   final TextEditingController _correoController = TextEditingController();
   final TextEditingController _contrasenaController = TextEditingController();
-  final TextEditingController _confirmarContrasenaController =
-  TextEditingController();
+  final TextEditingController _apellidosController = TextEditingController();
+  final TextEditingController _confirmarContrasenaController = TextEditingController();
 
   Future<void> _registerUserToFirebase(BuildContext context) async {
     try {
-      // Validar si las contraseñas coinciden
       if (_contrasenaController.text != _confirmarContrasenaController.text) {
         showDialog(
           context: context,
@@ -63,8 +62,8 @@ class _RegistroState extends State<Registro> {
       // Registrar el usuario en Firebase Firestore
       await FirebaseFirestore.instance.collection('usuarios').add({
         'nombre': _nombreController.text,
+        'apellidos':_apellidosController.text,
         'correo': _correoController.text,
-        // Agrega más campos según sea necesario
       });
 
       // Registrar el usuario en Firebase Authentication
@@ -72,8 +71,6 @@ class _RegistroState extends State<Registro> {
         email: _correoController.text,
         password: _contrasenaController.text,
       );
-
-      // Redirigir al usuario al menú principal (en este caso, al inicio de sesión)
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => Login()),
@@ -147,6 +144,19 @@ class _RegistroState extends State<Registro> {
                           style: TextStyle(color: Colors.white),
                           decoration: InputDecoration(
                             labelText: 'Nombre',
+                            labelStyle: TextStyle(color: Colors.white),
+                            border: InputBorder.none,
+                          ),
+                        ),
+                        Divider(
+                          color: Colors.grey,
+                          height: 1,
+                        ),
+                        TextFormField(
+                          controller: _apellidosController,
+                          style: TextStyle(color: Colors.white),
+                          decoration: InputDecoration(
+                            labelText: 'Apellidos',
                             labelStyle: TextStyle(color: Colors.white),
                             border: InputBorder.none,
                           ),

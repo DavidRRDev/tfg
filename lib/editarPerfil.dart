@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class EditarPerfilPage extends StatefulWidget {
   final String nombreUsuario;
+  final String apellidosUsuario;
   final String correoElectronico;
   final String direccion;
   final int edad;
@@ -9,6 +10,7 @@ class EditarPerfilPage extends StatefulWidget {
 
   EditarPerfilPage({
     required this.nombreUsuario,
+    required this.apellidosUsuario,
     required this.correoElectronico,
     required this.direccion,
     required this.edad,
@@ -21,6 +23,7 @@ class EditarPerfilPage extends StatefulWidget {
 
 class _EditarPerfilPageState extends State<EditarPerfilPage> {
   late TextEditingController _nombreController;
+  late TextEditingController _apellidosController;
   late TextEditingController _correoController;
   late TextEditingController _direccionController;
   late TextEditingController _edadController;
@@ -30,6 +33,7 @@ class _EditarPerfilPageState extends State<EditarPerfilPage> {
   void initState() {
     super.initState();
     _nombreController = TextEditingController(text: widget.nombreUsuario);
+    _apellidosController = TextEditingController(text: widget.apellidosUsuario);
     _correoController = TextEditingController(text: widget.correoElectronico);
     _direccionController = TextEditingController(text: widget.direccion);
     _edadController = TextEditingController(text: widget.edad.toString());
@@ -39,6 +43,7 @@ class _EditarPerfilPageState extends State<EditarPerfilPage> {
   @override
   void dispose() {
     _nombreController.dispose();
+    _apellidosController.dispose();
     _correoController.dispose();
     _direccionController.dispose();
     _edadController.dispose();
@@ -77,6 +82,7 @@ class _EditarPerfilPageState extends State<EditarPerfilPage> {
                 ),
               ),
               _buildEditablePerfilInfo('Nombre', _nombreController),
+              _buildEditablePerfilInfo('Apellidos', _apellidosController),
               _buildEditablePerfilInfo('Correo Electrónico', _correoController),
               _buildEditablePerfilInfo('Dirección', _direccionController),
               _buildEditablePerfilInfo('Edad', _edadController, keyboardType: TextInputType.number),
@@ -86,6 +92,7 @@ class _EditarPerfilPageState extends State<EditarPerfilPage> {
                 onPressed: () {
                   Navigator.pop(context, {
                     'nombreUsuario': _nombreController.text,
+                    'apellidosUsuario': _apellidosController.text,
                     'correoElectronico': _correoController.text,
                     'direccion': _direccionController.text,
                     'edad': int.parse(_edadController.text),
@@ -129,6 +136,7 @@ void main() {
   runApp(MaterialApp(
     home: EditarPerfilPage(
       nombreUsuario: 'Nombre de Usuario',
+      apellidosUsuario: 'Apellidos del Usuario',
       correoElectronico: 'usuario@example.com',
       direccion: '123 Calle Principal, Ciudad',
       edad: 30,
