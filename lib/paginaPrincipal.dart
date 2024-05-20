@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'perfil.dart';
 import 'cerrarSesion.dart';
-import 'ejercicios.dart'; // Importa la página de Ejercicios
+import 'ejercicios.dart';
 import 'invitarAmigo.dart';
 import 'ubicacion.dart';
 import 'planificacion.dart';
@@ -17,6 +17,9 @@ class _PaginaPrincipalState extends State<PaginaPrincipal> {
 
   @override
   Widget build(BuildContext context) {
+    final screenHeight = MediaQuery.of(context).size.height;
+    final screenWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
       key: _scaffoldKey,
       body: Stack(
@@ -26,6 +29,8 @@ class _PaginaPrincipalState extends State<PaginaPrincipal> {
           Image(
             image: AssetImage('assets/fondo.jpg'),
             fit: BoxFit.cover,
+            width: screenWidth,
+            height: screenHeight,
           ),
           // Contenido central
           Center(
@@ -33,19 +38,19 @@ class _PaginaPrincipalState extends State<PaginaPrincipal> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 _buildImageContainerWithIcon('assets/pesaInicio.jpg', () {
-                  // Navegar a EjerciciosPage al tocar la imagen de pesaInicio
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => EjerciciosPage()),
                   );
-                }),
-                SizedBox(height: 120),
+                }, screenHeight, screenWidth),
+                SizedBox(height: screenHeight * 0.1),
                 _buildImageContainer('assets/calendarioInicio.jpg', () {
-                   Navigator.push(
+                  Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => PlanificacionPage()),
+                    MaterialPageRoute(
+                        builder: (context) => PlanificacionPage()),
                   );
-                }),
+                }, screenHeight, screenWidth),
               ],
             ),
           ),
@@ -58,19 +63,21 @@ class _PaginaPrincipalState extends State<PaginaPrincipal> {
               backgroundColor: Colors.transparent,
               elevation: 0,
               leading: IconButton(
-                icon: Image.asset('assets/menuRayas.png'),
+                icon: Image.asset('assets/menuRayas.png',
+                    height: screenHeight * 0.04),
                 onPressed: () {
                   _scaffoldKey.currentState?.openDrawer();
                 },
               ),
               actions: [
                 IconButton(
-                  icon: Image.asset('assets/ajusteMenu.png'),
+                  icon: Image.asset('assets/ajusteMenu.png',
+                      height: screenHeight * 0.04),
                   onPressed: () {
                     Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => AjustesPage()),
-                );
+                      context,
+                      MaterialPageRoute(builder: (context) => AjustesPage()),
+                    );
                   },
                 ),
               ],
@@ -94,11 +101,13 @@ class _PaginaPrincipalState extends State<PaginaPrincipal> {
               // Encabezado del menú
               Container(
                 alignment: Alignment.center,
-                padding: EdgeInsets.fromLTRB(0, 80.0, 0, 50.0),
+                padding: EdgeInsets.fromLTRB(
+                    0, screenHeight * 0.1, 0, screenHeight * 0.05),
                 child: Text(
                   'Menú',
                   textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.white, fontSize: 40.0),
+                  style: TextStyle(
+                      color: Colors.white, fontSize: screenHeight * 0.05),
                 ),
               ),
               // Opciones del menú
@@ -107,43 +116,43 @@ class _PaginaPrincipalState extends State<PaginaPrincipal> {
                   context,
                   MaterialPageRoute(builder: (context) => PaginaPrincipal()),
                 );
-              }),
+              }, screenHeight),
               _buildListTile('assets/perfil.png', 'Perfil', () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => PerfilPage()),
                 );
-              }),
+              }, screenHeight),
               _buildListTile('assets/iconoPesa.png', 'Añadir ejercicio', () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => EjerciciosPage()),
                 );
-              }),
+              }, screenHeight),
               _buildListTile('assets/calendario.png', 'Planificación', () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => PlanificacionPage()),
                 );
-              }),
+              }, screenHeight),
               _buildListTile('assets/ubicacion.png', 'Ubicación', () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => UbicacionPage()),
                 );
-              }),
+              }, screenHeight),
               _buildListTile('assets/amigoMenu.png', 'Invitar Amigo', () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => InvitarAmigoPage()),
                 );
-              }),
+              }, screenHeight),
               _buildListTile('assets/cerrarSesion.png', 'Cerrar sesión', () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => CerrarSesionPage()),
                 );
-              }),
+              }, screenHeight),
             ],
           ),
         ),
@@ -152,20 +161,21 @@ class _PaginaPrincipalState extends State<PaginaPrincipal> {
   }
 
   // Método para construir un contenedor de imagen con onTap y un icono de "+"
-  Widget _buildImageContainerWithIcon(String imagePath, VoidCallback onTap) {
+  Widget _buildImageContainerWithIcon(String imagePath, VoidCallback onTap,
+      double screenHeight, double screenWidth) {
     return GestureDetector(
-      onTap: onTap, // Llama a la función onTap cuando se toca la imagen
+      onTap: onTap,
       child: Stack(
         children: [
           Container(
-            width: 350,
-            height: 180,
+            width: screenWidth * 0.8,
+            height: screenHeight * 0.25,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(30.0),
-              color: Colors.white.withOpacity(0.5), // Color de fondo con opacidad
+              borderRadius: BorderRadius.circular(screenWidth * 0.06),
+              color: Colors.white.withOpacity(0.5),
             ),
             child: ClipRRect(
-              borderRadius: BorderRadius.circular(30.0),
+              borderRadius: BorderRadius.circular(screenWidth * 0.06),
               child: Image(
                 image: AssetImage(imagePath),
                 fit: BoxFit.cover,
@@ -173,8 +183,8 @@ class _PaginaPrincipalState extends State<PaginaPrincipal> {
             ),
           ),
           Positioned(
-            bottom: 8,
-            right: 8,
+            bottom: screenHeight * 0.02,
+            right: screenWidth * 0.02,
             child: Container(
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
@@ -183,7 +193,7 @@ class _PaginaPrincipalState extends State<PaginaPrincipal> {
               child: Icon(
                 Icons.add,
                 color: Colors.black,
-                size: 24.0,
+                size: screenHeight * 0.04,
               ),
             ),
           ),
@@ -193,18 +203,19 @@ class _PaginaPrincipalState extends State<PaginaPrincipal> {
   }
 
   // Método para construir un contenedor de imagen con onTap
-  Widget _buildImageContainer(String imagePath, VoidCallback onTap) {
+  Widget _buildImageContainer(String imagePath, VoidCallback onTap,
+      double screenHeight, double screenWidth) {
     return GestureDetector(
-      onTap: onTap, // Llama a la función onTap cuando se toca la imagen
+      onTap: onTap,
       child: Container(
-        width: 350,
-        height: 180,
+        width: screenWidth * 0.8,
+        height: screenHeight * 0.25,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(30.0),
-          color: Colors.white.withOpacity(0.5), // Color de fondo con opacidad
+          borderRadius: BorderRadius.circular(screenWidth * 0.06),
+          color: Colors.white.withOpacity(0.5),
         ),
         child: ClipRRect(
-          borderRadius: BorderRadius.circular(30.0),
+          borderRadius: BorderRadius.circular(screenWidth * 0.06),
           child: Image(
             image: AssetImage(imagePath),
             fit: BoxFit.cover,
@@ -215,29 +226,27 @@ class _PaginaPrincipalState extends State<PaginaPrincipal> {
   }
 
   // Método para construir un elemento de ListTile para el menú
-  Widget _buildListTile(String leadingImagePath, String title, VoidCallback onTap) {
+
+  Widget _buildListTile(String leadingImagePath, String title,
+      VoidCallback onTap, double screenHeight) {
     return Column(
       children: [
         ListTile(
-          contentPadding: EdgeInsets.symmetric(horizontal: 20.0),
+          contentPadding: EdgeInsets.symmetric(horizontal: screenHeight * 0.05),
           leading: Padding(
-            padding: EdgeInsets.only(right: 10.0),
-            child: Image.asset(leadingImagePath, width: 60, height: 60),
+            padding: EdgeInsets.only(right: screenHeight * 0.02),
+            child: Image.asset(leadingImagePath,
+                width: screenHeight * 0.12, height: screenHeight * 0.12),
           ),
           title: Text(
             title,
-            style: TextStyle(color: Colors.white),
+            style:
+                TextStyle(color: Colors.white, fontSize: screenHeight * 0.025),
           ),
-          onTap: onTap, // Ejecutar la acción al tocar el ListTile
+          onTap: onTap,
         ),
-        Divider(color: Colors.transparent), // Separador entre elementos de la lista
+        Divider(color: Colors.transparent),
       ],
     );
   }
-}
-
-void main() {
-  runApp(MaterialApp(
-    home: PaginaPrincipal(),
-  ));
 }
