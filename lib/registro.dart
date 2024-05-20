@@ -151,8 +151,8 @@ class _RegistroState extends State<Registro> {
                 SizedBox(height: screenHeight * 0.05),
                 Image.asset(
                   'assets/drj.png',
-                  height: screenHeight * 0.2,
-                  width: screenHeight * 0.2,
+                  height: screenHeight * 0.1,
+                  width: screenHeight * 0.1,
                 ),
               ],
             ),
