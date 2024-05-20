@@ -38,13 +38,16 @@ class _PerfilPageState extends State<PerfilPage> {
       print("Datos del usuario desde Firestore (usuarios): $usuarioData");
 
       // Cargar datos de la colección datosDeUsuario
-      Map<String, dynamic>? datosDeUsuarioData = await getDatosDeUsuario(userId);
-      print("Datos del usuario desde Firestore (datosDeUsuario): $datosDeUsuarioData");
+      Map<String, dynamic>? datosDeUsuarioData =
+          await getDatosDeUsuario(userId);
+      print(
+          "Datos del usuario desde Firestore (datosDeUsuario): $datosDeUsuarioData");
 
       if (usuarioData != null) {
         setState(() {
           nombreUsuario = usuarioData['nombre'] ?? 'Nombre de Usuario';
-          apellidosUsuario = usuarioData['apellidos'] ?? 'Apellidos del Usuario';
+          apellidosUsuario =
+              usuarioData['apellidos'] ?? 'Apellidos del Usuario';
           correoElectronico = user.email ?? 'usuario@example.com';
         });
       } else {
@@ -68,6 +71,9 @@ class _PerfilPageState extends State<PerfilPage> {
 
   @override
   Widget build(BuildContext context) {
+    final screenHeight = MediaQuery.of(context).size.height;
+    final screenWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Perfil'),
@@ -84,25 +90,30 @@ class _PerfilPageState extends State<PerfilPage> {
         ),
         child: Center(
           child: ListView(
-            padding: EdgeInsets.all(16.0),
+            padding: EdgeInsets.all(screenWidth * 0.04),
             children: [
               ListTile(
                 title: Text(
                   'Foto de Perfil',
-                  style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold, color: Colors.white),
+                  style: TextStyle(
+                      fontSize: screenWidth * 0.045,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white),
                 ),
                 leading: CircleAvatar(
-                  radius: 30.0,
+                  radius: screenWidth * 0.09,
                   backgroundImage: AssetImage('assets/avatar.png'),
                 ),
               ),
-              _buildPerfilInfo('Nombre', nombreUsuario),
-              _buildPerfilInfo('Apellidos', apellidosUsuario),
-              _buildPerfilInfo('Correo Electrónico', correoElectronico),
-              _buildPerfilInfo('Edad', edad),
-              _buildPerfilInfo('Altura', altura),
-              _buildPerfilInfo('Peso', peso),
-              _buildPerfilInfo('Sexo', sexo),
+              _buildPerfilInfo('Nombre', nombreUsuario, screenWidth),
+              _buildPerfilInfo('Apellidos', apellidosUsuario, screenWidth),
+              _buildPerfilInfo(
+                  'Correo Electrónico', correoElectronico, screenWidth),
+              _buildPerfilInfo('Edad', edad, screenWidth),
+              _buildPerfilInfo('Altura', altura, screenWidth),
+              _buildPerfilInfo('Peso', peso, screenWidth),
+              _buildPerfilInfo('Sexo', sexo, screenWidth),
+              SizedBox(height: screenHeight * 0.02),
               ElevatedButton(
                 onPressed: () async {
                   final result = await Navigator.push(
@@ -148,15 +159,18 @@ class _PerfilPageState extends State<PerfilPage> {
     );
   }
 
-  Widget _buildPerfilInfo(String label, String value) {
+  Widget _buildPerfilInfo(String label, String value, double screenWidth) {
     return ListTile(
       title: Text(
         label,
-        style: TextStyle(fontSize: 18.0, color: Colors.white),
+        style: TextStyle(fontSize: screenWidth * 0.04, color: Colors.white),
       ),
       subtitle: Text(
         value,
-        style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold, color: Colors.white),
+        style: TextStyle(
+            fontSize: screenWidth * 0.038,
+            fontWeight: FontWeight.bold,
+            color: Colors.white),
       ),
     );
   }
