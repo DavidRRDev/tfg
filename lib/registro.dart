@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart'; // Agregado para autenticación
-
+import 'package:firebase_auth/firebase_auth.dart';
 import 'login.dart'; // Suponiendo que tienes una pantalla de inicio de sesión separada
 
 void main() async {
@@ -34,7 +33,8 @@ class _RegistroState extends State<Registro> {
   final TextEditingController _correoController = TextEditingController();
   final TextEditingController _contrasenaController = TextEditingController();
   final TextEditingController _apellidosController = TextEditingController();
-  final TextEditingController _confirmarContrasenaController = TextEditingController();
+  final TextEditingController _confirmarContrasenaController =
+      TextEditingController();
 
   Future<void> _registerUserToFirebase(BuildContext context) async {
     try {
@@ -59,18 +59,23 @@ class _RegistroState extends State<Registro> {
         return;
       }
 
-      // Registrar el usuario en Firebase Firestore
-      await FirebaseFirestore.instance.collection('usuarios').add({
-        'nombre': _nombreController.text,
-        'apellidos':_apellidosController.text,
-        'correo': _correoController.text,
-      });
-
       // Registrar el usuario en Firebase Authentication
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      UserCredential userCredential =
+          await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: _correoController.text,
         password: _contrasenaController.text,
       );
+
+      // Guardar los datos adicionales del usuario en Firestore
+      await FirebaseFirestore.instance
+          .collection('usuarios')
+          .doc(userCredential.user!.uid)
+          .set({
+        'nombre': _nombreController.text,
+        'apellidos': _apellidosController.text,
+        'correo': _correoController.text,
+      });
+
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => Login()),
@@ -100,6 +105,8 @@ class _RegistroState extends State<Registro> {
 
   @override
   Widget build(BuildContext context) {
+    final screenHeight = MediaQuery.of(context).size.height;
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Container(
@@ -118,112 +125,107 @@ class _RegistroState extends State<Registro> {
             padding: const EdgeInsets.all(16.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
-              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
+                SizedBox(height: screenHeight * 0.05),
                 Text(
                   'Formulario de Registro',
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    fontSize: 24,
+                    fontSize: 28, // Aumentar el tamaño de fuente del título
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
                   ),
                 ),
-                SizedBox(height: 20),
-                Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.2),
-                    borderRadius: BorderRadius.circular(12.0),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      children: [
-                        TextFormField(
-                          controller: _nombreController,
-                          style: TextStyle(color: Colors.white),
-                          decoration: InputDecoration(
-                            labelText: 'Nombre',
-                            labelStyle: TextStyle(color: Colors.white),
-                            border: InputBorder.none,
-                          ),
-                        ),
-                        Divider(
-                          color: Colors.grey,
-                          height: 1,
-                        ),
-                        TextFormField(
-                          controller: _apellidosController,
-                          style: TextStyle(color: Colors.white),
-                          decoration: InputDecoration(
-                            labelText: 'Apellidos',
-                            labelStyle: TextStyle(color: Colors.white),
-                            border: InputBorder.none,
-                          ),
-                        ),
-                        Divider(
-                          color: Colors.grey,
-                          height: 1,
-                        ),
-                        TextFormField(
-                          controller: _correoController,
-                          style: TextStyle(color: Colors.white),
-                          decoration: InputDecoration(
-                            labelText: 'Correo Electrónico',
-                            labelStyle: TextStyle(color: Colors.white),
-                            border: InputBorder.none,
-                          ),
-                        ),
-                        Divider(
-                          color: Colors.grey,
-                          height: 1,
-                        ),
-                        TextFormField(
-                          controller: _contrasenaController,
-                          style: TextStyle(color: Colors.white),
-                          decoration: InputDecoration(
-                            labelText: 'Contraseña',
-                            labelStyle: TextStyle(color: Colors.white),
-                            border: InputBorder.none,
-                          ),
-                          obscureText: true,
-                        ),
-                        Divider(
-                          color: Colors.grey,
-                          height: 1,
-                        ),
-                        TextFormField(
-                          controller: _confirmarContrasenaController,
-                          style: TextStyle(color: Colors.white),
-                          decoration: InputDecoration(
-                            labelText: 'Confirmar Contraseña',
-                            labelStyle: TextStyle(color: Colors.white),
-                            border: InputBorder.none,
-                          ),
-                          obscureText: true,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                SizedBox(height: 20),
+                SizedBox(height: screenHeight * 0.05),
+                _buildForm(),
+                SizedBox(height: screenHeight * 0.05),
                 ElevatedButton(
                   onPressed: () {
                     _registerUserToFirebase(context);
                   },
-                  child: Text('Enviar'),
+                  child: Text('Enviar',
+                      style: TextStyle(
+                          fontSize:
+                              18)), // Aumentar el tamaño de fuente del botón
                 ),
-                SizedBox(height: 10),
+                SizedBox(height: screenHeight * 0.05),
                 Image.asset(
                   'assets/drj.png',
-                  height: 200,
-                  width: 200,
+                  height: screenHeight * 0.2,
+                  width: screenHeight * 0.2,
                 ),
               ],
             ),
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildForm() {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white.withOpacity(0.2),
+        borderRadius: BorderRadius.circular(12.0),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(
+            16.0), // Aumentar el padding para campos más grandes
+        child: Column(
+          children: [
+            _buildTextField(_nombreController, 'Nombre'),
+            _buildDivider(),
+            _buildTextField(_apellidosController, 'Apellidos'),
+            _buildDivider(),
+            _buildTextField(_correoController, 'Correo Electrónico'),
+            _buildDivider(),
+            _buildPasswordField(_contrasenaController, 'Contraseña'),
+            _buildDivider(),
+            _buildPasswordField(
+                _confirmarContrasenaController, 'Confirmar Contraseña'),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTextField(TextEditingController controller, String label) {
+    return TextFormField(
+      controller: controller,
+      style: TextStyle(
+          color: Colors.white, fontSize: 18), // Aumentar el tamaño de fuente
+      decoration: InputDecoration(
+        labelText: label,
+        labelStyle: TextStyle(
+            color: Colors.white, fontSize: 18), // Aumentar el tamaño de fuente
+        border: InputBorder.none,
+        contentPadding: EdgeInsets.symmetric(
+            vertical: 16.0, horizontal: 12.0), // Aumentar el padding interno
+      ),
+    );
+  }
+
+  Widget _buildPasswordField(TextEditingController controller, String label) {
+    return TextFormField(
+      controller: controller,
+      style: TextStyle(
+          color: Colors.white, fontSize: 18), // Aumentar el tamaño de fuente
+      obscureText: true,
+      decoration: InputDecoration(
+        labelText: label,
+        labelStyle: TextStyle(
+            color: Colors.white, fontSize: 18), // Aumentar el tamaño de fuente
+        border: InputBorder.none,
+        contentPadding: EdgeInsets.symmetric(
+            vertical: 16.0, horizontal: 12.0), // Aumentar el padding interno
+      ),
+    );
+  }
+
+  Widget _buildDivider() {
+    return Divider(
+      color: Colors.grey,
+      height: 1,
     );
   }
 }

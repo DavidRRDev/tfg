@@ -67,6 +67,9 @@ class _DatosUsuarioState extends State<DatosUsuario> {
 
   @override
   Widget build(BuildContext context) {
+    final screenHeight = MediaQuery.of(context).size.height;
+    final screenWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Container(
@@ -82,7 +85,7 @@ class _DatosUsuarioState extends State<DatosUsuario> {
         ),
         child: Center(
           child: Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: EdgeInsets.all(screenWidth * 0.05),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               mainAxisAlignment: MainAxisAlignment.center,
@@ -91,27 +94,31 @@ class _DatosUsuarioState extends State<DatosUsuario> {
                   'Formulario de Registro',
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    fontSize: 24,
+                    fontSize: screenHeight * 0.03,
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
                   ),
                 ),
-                SizedBox(height: 20),
+                SizedBox(height: screenHeight * 0.02),
                 Container(
                   decoration: BoxDecoration(
                     color: Colors.white.withOpacity(0.2),
-                    borderRadius: BorderRadius.circular(12.0),
+                    borderRadius: BorderRadius.circular(screenWidth * 0.06),
                   ),
                   child: Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: EdgeInsets.all(screenWidth * 0.04),
                     child: Column(
                       children: [
                         TextFormField(
                           controller: _pesoController,
-                          style: TextStyle(color: Colors.white),
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: screenHeight * 0.025),
                           decoration: InputDecoration(
                             labelText: 'Peso',
-                            labelStyle: TextStyle(color: Colors.white),
+                            labelStyle: TextStyle(
+                                color: Colors.white,
+                                fontSize: screenHeight * 0.025),
                             border: InputBorder.none,
                           ),
                         ),
@@ -121,10 +128,14 @@ class _DatosUsuarioState extends State<DatosUsuario> {
                         ),
                         TextFormField(
                           controller: _alturaController,
-                          style: TextStyle(color: Colors.white),
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: screenHeight * 0.025),
                           decoration: InputDecoration(
                             labelText: 'Altura',
-                            labelStyle: TextStyle(color: Colors.white),
+                            labelStyle: TextStyle(
+                                color: Colors.white,
+                                fontSize: screenHeight * 0.025),
                             border: InputBorder.none,
                           ),
                         ),
@@ -134,10 +145,14 @@ class _DatosUsuarioState extends State<DatosUsuario> {
                         ),
                         TextFormField(
                           controller: _edadController,
-                          style: TextStyle(color: Colors.white),
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: screenHeight * 0.025),
                           decoration: InputDecoration(
                             labelText: 'Edad',
-                            labelStyle: TextStyle(color: Colors.white),
+                            labelStyle: TextStyle(
+                                color: Colors.white,
+                                fontSize: screenHeight * 0.025),
                             border: InputBorder.none,
                           ),
                         ),
@@ -150,7 +165,9 @@ class _DatosUsuarioState extends State<DatosUsuario> {
                           items: ['Hombre', 'Mujer'].map((String value) {
                             return DropdownMenuItem<String>(
                               value: value,
-                              child: Text(value),
+                              child: Text(value,
+                                  style: TextStyle(
+                                      fontSize: screenHeight * 0.025)),
                             );
                           }).toList(),
                           onChanged: (String? value) {
@@ -159,10 +176,14 @@ class _DatosUsuarioState extends State<DatosUsuario> {
                             });
                           },
                           dropdownColor: Colors.black,
-                          style: TextStyle(color: Colors.white),
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: screenHeight * 0.025),
                           decoration: InputDecoration(
                             labelText: 'Sexo',
-                            labelStyle: TextStyle(color: Colors.white),
+                            labelStyle: TextStyle(
+                                color: Colors.white,
+                                fontSize: screenHeight * 0.025),
                             border: InputBorder.none,
                           ),
                         ),
@@ -170,18 +191,19 @@ class _DatosUsuarioState extends State<DatosUsuario> {
                     ),
                   ),
                 ),
-                SizedBox(height: 20),
+                SizedBox(height: screenHeight * 0.03),
                 ElevatedButton(
                   onPressed: () {
                     _registerUserToFirebase(context);
                   },
-                  child: Text('Enviar'),
+                  child: Text('Enviar',
+                      style: TextStyle(fontSize: screenHeight * 0.025)),
                 ),
-                SizedBox(height: 10),
+                SizedBox(height: screenHeight * 0.02),
                 Image.asset(
                   'assets/drj.png',
-                  height: 200,
-                  width: 200,
+                  height: screenHeight * 0.15,
+                  width: screenHeight * 0.15,
                 ),
               ],
             ),

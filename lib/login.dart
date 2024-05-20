@@ -38,6 +38,9 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
+    final screenHeight = MediaQuery.of(context).size.height;
+    final screenWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Container(
@@ -58,7 +61,7 @@ class _LoginState extends State<Login> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
-                const SizedBox(height: 60),
+                SizedBox(height: screenHeight * 0.1),
                 const Text(
                   'Introduce tu usuario y contraseña',
                   style: TextStyle(
@@ -67,15 +70,15 @@ class _LoginState extends State<Login> {
                       fontWeight: FontWeight.bold),
                   textAlign: TextAlign.center,
                 ),
-                const SizedBox(height: 20),
+                SizedBox(height: screenHeight * 0.05),
                 _buildTextWithInput(
                   'Correo electrónico',
                   TextInputType.emailAddress,
                   _emailController,
                 ),
-                SizedBox(height: 20),
+                SizedBox(height: screenHeight * 0.02),
                 _buildPasswordInput('Contraseña', _passwordController),
-                SizedBox(height: 20),
+                SizedBox(height: screenHeight * 0.02),
                 GestureDetector(
                   onTap: () {
                     Navigator.push(
@@ -85,39 +88,43 @@ class _LoginState extends State<Login> {
                       ),
                     );
                   },
-                  child: Text(
+                  child: const Text(
                     "¿Has olvidado la contraseña?",
                     style: TextStyle(
                       color: Colors.white,
+                      fontSize: 16, // Aumentar el tamaño de la letra
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
-                SizedBox(height: 20),
+                SizedBox(height: screenHeight * 0.02),
                 ElevatedButton(
                   onPressed: () {
                     _signInWithEmailAndPassword();
                   },
-                  child: Text('Iniciar', style: TextStyle(fontSize: 16)),
+                  child: const Text('Iniciar',
+                      style: TextStyle(
+                          fontSize: 18)), // Aumentar el tamaño de la letra
                 ),
-                SizedBox(height: 10),
+                SizedBox(height: screenHeight * 0.01),
                 ElevatedButton(
                   onPressed: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(builder: (context) => Registro()),
                     );
                   },
-                  child: Text('Registrarse', style: TextStyle(fontSize: 16)),
+                  child: const Text('Registrarse',
+                      style: TextStyle(
+                          fontSize: 18)), // Aumentar el tamaño de la letra
                 ),
-                SizedBox(height: 20),
-                Expanded(
-                  child: Container(
-                    alignment: Alignment.bottomCenter,
-                    padding: EdgeInsets.only(bottom: 20.0),
-                    child: Image.asset(
-                      'assets/drj.png',
-                      fit: BoxFit.contain,
-                    ),
+                SizedBox(height: screenHeight * 0.05),
+                Container(
+                  alignment: Alignment.bottomCenter,
+                  padding: EdgeInsets.only(bottom: screenHeight * 0.05),
+                  child: Image.asset(
+                    'assets/drj.png',
+                    height: screenHeight * 0.2,
+                    fit: BoxFit.contain,
                   ),
                 ),
               ],
@@ -137,23 +144,31 @@ class _LoginState extends State<Login> {
           label,
           style: const TextStyle(
             color: Colors.white,
+            fontSize: 18, // Aumentar el tamaño de la letra
             fontWeight: FontWeight.bold,
           ),
         ),
-        SizedBox(height: 10),
+        const SizedBox(height: 10),
         TextFormField(
           controller: controller,
-          style: TextStyle(color: Colors.white),
+          style: const TextStyle(
+              color: Colors.white,
+              fontSize: 18), // Aumentar el tamaño de la letra
           keyboardType: keyboardType,
           decoration: InputDecoration(
             hintText: 'Ingrese su $label',
-            hintStyle: TextStyle(color: Colors.white70),
+            hintStyle: const TextStyle(
+                color: Colors.white70,
+                fontSize: 16), // Aumentar el tamaño de la letra
             fillColor: Colors.white.withOpacity(0.2),
             filled: true,
             border: OutlineInputBorder(
               borderSide: BorderSide.none,
               borderRadius: BorderRadius.circular(5),
             ),
+            contentPadding: const EdgeInsets.symmetric(
+                vertical: 16.0,
+                horizontal: 12.0), // Aumentar el padding interno
           ),
         ),
       ],
@@ -168,24 +183,32 @@ class _LoginState extends State<Login> {
           label,
           style: const TextStyle(
             color: Colors.white,
+            fontSize: 18, // Aumentar el tamaño de la letra
             fontWeight: FontWeight.bold,
           ),
         ),
-        SizedBox(height: 10),
+        const SizedBox(height: 10),
         TextFormField(
           controller: controller,
-          style: TextStyle(color: Colors.white),
+          style: const TextStyle(
+              color: Colors.white,
+              fontSize: 18), // Aumentar el tamaño de la letra
           keyboardType: TextInputType.visiblePassword,
           obscureText: _obscurePassword,
           decoration: InputDecoration(
             hintText: 'Ingrese su $label',
-            hintStyle: TextStyle(color: Colors.white70),
+            hintStyle: const TextStyle(
+                color: Colors.white70,
+                fontSize: 16), // Aumentar el tamaño de la letra
             fillColor: Colors.white.withOpacity(0.2),
             filled: true,
             border: OutlineInputBorder(
               borderSide: BorderSide.none,
               borderRadius: BorderRadius.circular(5),
             ),
+            contentPadding: const EdgeInsets.symmetric(
+                vertical: 16.0,
+                horizontal: 12.0), // Aumentar el padding interno
             suffixIcon: IconButton(
               onPressed: () {
                 setState(() {
