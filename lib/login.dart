@@ -123,7 +123,7 @@ class _LoginState extends State<Login> {
                   padding: EdgeInsets.only(bottom: screenHeight * 0.05),
                   child: Image.asset(
                     'assets/drj.png',
-                    height: screenHeight * 0.2,
+                    height: screenHeight * 0.12,
                     fit: BoxFit.contain,
                   ),
                 ),
