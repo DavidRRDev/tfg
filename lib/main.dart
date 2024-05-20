@@ -1,6 +1,6 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart'; // Importa Firebase Core
+
 import 'package:tfg/login.dart';
 import 'firebase_options.dart'; // Asegúrate de importar las opciones de configuración de Firebase
 

@@ -232,16 +232,22 @@ class _PaginaPrincipalState extends State<PaginaPrincipal> {
     return Column(
       children: [
         ListTile(
-          contentPadding: EdgeInsets.symmetric(horizontal: screenHeight * 0.05),
+          contentPadding: EdgeInsets.symmetric(
+              horizontal: screenHeight * 0.02), // Reducir el padding horizontal
           leading: Padding(
             padding: EdgeInsets.only(right: screenHeight * 0.02),
-            child: Image.asset(leadingImagePath,
-                width: screenHeight * 0.12, height: screenHeight * 0.12),
+            child: Image.asset(
+              leadingImagePath,
+              width: screenHeight * 0.06, // Ajustar el tamaño de la imagen
+              height: screenHeight * 0.06, // Ajustar el tamaño de la imagen
+            ),
           ),
           title: Text(
             title,
-            style:
-                TextStyle(color: Colors.white, fontSize: screenHeight * 0.025),
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: screenHeight * 0.025, // Ajustar el tamaño del texto
+            ),
           ),
           onTap: onTap,
         ),
