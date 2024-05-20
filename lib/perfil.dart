@@ -33,21 +33,33 @@ class _PerfilPageState extends State<PerfilPage> {
       userId = user.uid;
       print("User ID: $userId");
 
-      Map<String, dynamic>? userData = await getUsuario(userId);
-      print("Datos del usuario desde Firestore: $userData");
+      // Cargar datos de la colección usuarios
+      Map<String, dynamic>? usuarioData = await getUsuario(userId);
+      print("Datos del usuario desde Firestore (usuarios): $usuarioData");
 
-      if (userData != null) {
+      // Cargar datos de la colección datosDeUsuario
+      Map<String, dynamic>? datosDeUsuarioData = await getDatosDeUsuario(userId);
+      print("Datos del usuario desde Firestore (datosDeUsuario): $datosDeUsuarioData");
+
+      if (usuarioData != null) {
         setState(() {
-          nombreUsuario = userData['nombre'] ?? 'Nombre de Usuario';
-          apellidosUsuario = userData['apellidos'] ?? 'Apellidos del Usuario';
+          nombreUsuario = usuarioData['nombre'] ?? 'Nombre de Usuario';
+          apellidosUsuario = usuarioData['apellidos'] ?? 'Apellidos del Usuario';
           correoElectronico = user.email ?? 'usuario@example.com';
-          edad = userData['edad'] ?? 'Edad';
-          altura = userData['altura'] ?? 'Altura';
-          peso = userData['peso'] ?? 'Peso';
-          sexo = userData['sexo'] ?? 'Sexo';
         });
       } else {
         print("El documento del usuario no existe en Firestore.");
+      }
+
+      if (datosDeUsuarioData != null) {
+        setState(() {
+          edad = datosDeUsuarioData['edad'] ?? 'Edad';
+          altura = datosDeUsuarioData['altura'] ?? 'Altura';
+          peso = datosDeUsuarioData['peso'] ?? 'Peso';
+          sexo = datosDeUsuarioData['sexo'] ?? 'Sexo';
+        });
+      } else {
+        print("El documento de datosDeUsuario no existe en Firestore.");
       }
     } else {
       print("El usuario no ha iniciado sesión.");
@@ -118,10 +130,7 @@ class _PerfilPageState extends State<PerfilPage> {
                       peso = result['peso'];
                       sexo = result['sexo'];
 
-                      updateUsuario(userId, {
-                        'nombre': nombreUsuario,
-                        'apellidos': apellidosUsuario,
-                        'correo': correoElectronico,
+                      updateDatosDeUsuario(userId, {
                         'edad': edad,
                         'altura': altura,
                         'peso': peso,

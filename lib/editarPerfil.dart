@@ -72,44 +72,31 @@ class _EditarPerfilPageState extends State<EditarPerfilPage> {
             colors: [Colors.black, Color(0xFF5E5EF1)],
           ),
         ),
-        child: Center(
-          child: ListView(
-            padding: EdgeInsets.all(16.0),
-            children: [
-              ListTile(
-                title: Text(
-                  'Editar Información',
-                  style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold, color: Colors.white),
-                ),
-                leading: CircleAvatar(
-                  radius: 30.0,
-                  backgroundImage: AssetImage('assets/avatar.png'),
-                ),
-              ),
-              _buildEditablePerfilInfo('Nombre', _nombreController),
-              _buildEditablePerfilInfo('Apellidos', _apellidosController),
-              _buildEditablePerfilInfo('Correo Electrónico', _correoController),
-              _buildEditablePerfilInfo('Edad', _edadController),
-              _buildEditablePerfilInfo('Altura', _alturaController),
-              _buildEditablePerfilInfo('Peso', _pesoController),
-              _buildEditablePerfilInfo('Sexo', _sexoController),
-              SizedBox(height: 20.0),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.pop(context, {
-                    'nombreUsuario': _nombreController.text,
-                    'apellidosUsuario': _apellidosController.text,
-                    'correoElectronico': _correoController.text,
-                    'edad': _edadController.text,
-                    'altura': _alturaController.text,
-                    'peso': _pesoController.text,
-                    'sexo': _sexoController.text,
-                  });
-                },
-                child: Text('Guardar Cambios'),
-              ),
-            ],
-          ),
+        child: ListView(
+          padding: EdgeInsets.all(16.0),
+          children: [
+            _buildEditablePerfilInfo('Nombre', _nombreController),
+            _buildEditablePerfilInfo('Apellidos', _apellidosController),
+            _buildEditablePerfilInfo('Correo Electrónico', _correoController),
+            _buildEditablePerfilInfo('Edad', _edadController),
+            _buildEditablePerfilInfo('Altura', _alturaController),
+            _buildEditablePerfilInfo('Peso', _pesoController),
+            _buildEditablePerfilInfo('Sexo', _sexoController),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context, {
+                  'nombreUsuario': _nombreController.text,
+                  'apellidosUsuario': _apellidosController.text,
+                  'correoElectronico': _correoController.text,
+                  'edad': _edadController.text,
+                  'altura': _alturaController.text,
+                  'peso': _pesoController.text,
+                  'sexo': _sexoController.text,
+                });
+              },
+              child: Text('Guardar Cambios'),
+            ),
+          ],
         ),
       ),
     );
