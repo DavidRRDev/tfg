@@ -38,6 +38,33 @@ class _RegistroState extends State<Registro> {
 
   Future<void> _registerUserToFirebase(BuildContext context) async {
     try {
+      // Validar que todos los campos estén llenos
+      if (_nombreController.text.isEmpty ||
+          _correoController.text.isEmpty ||
+          _contrasenaController.text.isEmpty ||
+          _apellidosController.text.isEmpty ||
+          _confirmarContrasenaController.text.isEmpty) {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Error de registro'),
+              content: Text('Por favor, completa todos los campos.'),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('Aceptar'),
+                ),
+              ],
+            );
+          },
+        );
+        return;
+      }
+
+      // Validar que las contraseñas coincidan
       if (_contrasenaController.text != _confirmarContrasenaController.text) {
         showDialog(
           context: context,
