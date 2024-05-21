@@ -23,13 +23,34 @@ class _DatosUsuarioState extends State<DatosUsuario> {
         return;
       }
 
+      // Validar que todos los campos estén llenos
+      if (_pesoController.text.isEmpty ||
+          _alturaController.text.isEmpty ||
+          _edadController.text.isEmpty ||
+          _sexo.isEmpty) {
+        _showErrorDialog(context, 'Error de registro',
+            'Por favor, completa todos los campos.');
+        return;
+      }
+
+      // Validar que los campos numéricos sean válidos
+      final peso = double.tryParse(_pesoController.text);
+      final altura = double.tryParse(_alturaController.text);
+      final edad = int.tryParse(_edadController.text);
+
+      if (peso == null || altura == null || edad == null) {
+        _showErrorDialog(context, 'Error de registro',
+            'Por favor, ingresa valores numéricos válidos para peso, altura y edad.');
+        return;
+      }
+
       await FirebaseFirestore.instance
           .collection('datosDeUsuario')
           .doc(user.uid)
           .set({
-        'peso': _pesoController.text,
-        'altura': _alturaController.text,
-        'edad': _edadController.text,
+        'peso': peso,
+        'altura': altura,
+        'edad': edad,
         'sexo': _sexo,
         'uid': user.uid, // Add the user's UID as a foreign key
       });
@@ -111,6 +132,7 @@ class _DatosUsuarioState extends State<DatosUsuario> {
                       children: [
                         TextFormField(
                           controller: _pesoController,
+                          keyboardType: TextInputType.number,
                           style: TextStyle(
                               color: Colors.white,
                               fontSize: screenHeight * 0.025),
@@ -128,6 +150,7 @@ class _DatosUsuarioState extends State<DatosUsuario> {
                         ),
                         TextFormField(
                           controller: _alturaController,
+                          keyboardType: TextInputType.number,
                           style: TextStyle(
                               color: Colors.white,
                               fontSize: screenHeight * 0.025),
@@ -145,6 +168,7 @@ class _DatosUsuarioState extends State<DatosUsuario> {
                         ),
                         TextFormField(
                           controller: _edadController,
+                          keyboardType: TextInputType.number,
                           style: TextStyle(
                               color: Colors.white,
                               fontSize: screenHeight * 0.025),
