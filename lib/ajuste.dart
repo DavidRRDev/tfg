@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'firebase_service.dart';
 class AjustesPage extends StatefulWidget {
   @override
   _AjustesPageState createState() => _AjustesPageState();
@@ -134,7 +134,7 @@ class _AjustesPageState extends State<AjustesPage> {
     );
   }
 
-  void _mostrarDialogoConfirmacion() {
+    void _mostrarDialogoConfirmacion() {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -150,8 +150,30 @@ class _AjustesPageState extends State<AjustesPage> {
             ),
             TextButton(
               child: Text('Aceptar'),
+              onPressed: () async {
+                await deleteAllInferiorData();
+                await deleteAllTrenSuperiorData(); // Eliminar todos los registros
+                Navigator.of(context).pop(); // Cerrar el diálogo después de aceptar
+                _mostrarMensajeExito(); // Mostrar mensaje de éxito
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _mostrarMensajeExito() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Éxito'),
+          content: Text('Datos eliminados correctamente'),
+          actions: [
+            TextButton(
+              child: Text('Aceptar'),
               onPressed: () {
-                // Aquí puedes agregar la lógica para eliminar los datos
                 Navigator.of(context).pop(); // Cerrar el diálogo después de aceptar
               },
             ),
@@ -160,6 +182,7 @@ class _AjustesPageState extends State<AjustesPage> {
       },
     );
   }
+
 }
 
 void main() {

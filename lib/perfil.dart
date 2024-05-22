@@ -13,9 +13,9 @@ class _PerfilPageState extends State<PerfilPage> {
   String nombreUsuario = 'Nombre de Usuario';
   String apellidosUsuario = 'Apellidos del Usuario';
   String correoElectronico = 'usuario@example.com';
-  String edad = 'Edad';
-  String altura = 'Altura';
-  String peso = 'Peso';
+  int edad = 0;
+  double altura = 0.0;
+  double peso = 0.0;
   String sexo = 'Sexo';
   String userId = '';
 
@@ -46,8 +46,7 @@ class _PerfilPageState extends State<PerfilPage> {
       if (usuarioData != null) {
         setState(() {
           nombreUsuario = usuarioData['nombre'] ?? 'Nombre de Usuario';
-          apellidosUsuario =
-              usuarioData['apellidos'] ?? 'Apellidos del Usuario';
+          apellidosUsuario = usuarioData['apellidos'] ?? 'Apellidos del Usuario';
           correoElectronico = user.email ?? 'usuario@example.com';
         });
       } else {
@@ -56,9 +55,9 @@ class _PerfilPageState extends State<PerfilPage> {
 
       if (datosDeUsuarioData != null) {
         setState(() {
-          edad = datosDeUsuarioData['edad'] ?? 'Edad';
-          altura = datosDeUsuarioData['altura'] ?? 'Altura';
-          peso = datosDeUsuarioData['peso'] ?? 'Peso';
+          edad = datosDeUsuarioData['edad'] ?? 0;
+          altura = (datosDeUsuarioData['altura'] ?? 0.0).toDouble();
+          peso = (datosDeUsuarioData['peso'] ?? 0.0).toDouble();
           sexo = datosDeUsuarioData['sexo'] ?? 'Sexo';
         });
       } else {
@@ -94,7 +93,7 @@ class _PerfilPageState extends State<PerfilPage> {
             children: [
               ListTile(
                 title: Text(
-                  'Foto de Perfil',
+                  'Perfil',
                   style: TextStyle(
                       fontSize: screenWidth * 0.045,
                       fontWeight: FontWeight.bold,
@@ -109,9 +108,9 @@ class _PerfilPageState extends State<PerfilPage> {
               _buildPerfilInfo('Apellidos', apellidosUsuario, screenWidth),
               _buildPerfilInfo(
                   'Correo Electrónico', correoElectronico, screenWidth),
-              _buildPerfilInfo('Edad', edad, screenWidth),
-              _buildPerfilInfo('Altura', altura, screenWidth),
-              _buildPerfilInfo('Peso', peso, screenWidth),
+              _buildPerfilInfo('Edad', edad.toString(), screenWidth),
+              _buildPerfilInfo('Altura', altura.toString(), screenWidth),
+              _buildPerfilInfo('Peso', peso.toString(), screenWidth),
               _buildPerfilInfo('Sexo', sexo, screenWidth),
               SizedBox(height: screenHeight * 0.02),
               ElevatedButton(
@@ -136,9 +135,9 @@ class _PerfilPageState extends State<PerfilPage> {
                       nombreUsuario = result['nombreUsuario'];
                       apellidosUsuario = result['apellidosUsuario'];
                       correoElectronico = result['correoElectronico'];
-                      edad = result['edad'];
-                      altura = result['altura'];
-                      peso = result['peso'];
+                      edad = int.tryParse(result['edad']) ?? 0;
+                      altura = double.tryParse(result['altura']) ?? 0.0;
+                      peso = double.tryParse(result['peso']) ?? 0.0;
                       sexo = result['sexo'];
 
                       updateDatosDeUsuario(userId, {
@@ -146,7 +145,7 @@ class _PerfilPageState extends State<PerfilPage> {
                         'altura': altura,
                         'peso': peso,
                         'sexo': sexo,
-                      });
+                      });   
                     });
                   }
                 },

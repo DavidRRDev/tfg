@@ -103,6 +103,13 @@ class _RegistroState extends State<Registro> {
         'correo': _correoController.text,
       });
 
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Datos guardados correctamente.'),
+        ),
+      );
+      await Future.delayed(Duration(seconds: 2));
+      
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => Login()),

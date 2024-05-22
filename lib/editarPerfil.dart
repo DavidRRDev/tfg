@@ -4,9 +4,9 @@ class EditarPerfilPage extends StatefulWidget {
   final String nombreUsuario;
   final String apellidosUsuario;
   final String correoElectronico;
-  final String edad;
-  final String altura;
-  final String peso;
+  final int edad;
+  final double altura;
+  final double peso;
   final String sexo;
 
   EditarPerfilPage({
@@ -38,9 +38,9 @@ class _EditarPerfilPageState extends State<EditarPerfilPage> {
     _nombreController = TextEditingController(text: widget.nombreUsuario);
     _apellidosController = TextEditingController(text: widget.apellidosUsuario);
     _correoController = TextEditingController(text: widget.correoElectronico);
-    _edadController = TextEditingController(text: widget.edad);
-    _alturaController = TextEditingController(text: widget.altura);
-    _pesoController = TextEditingController(text: widget.peso);
+    _edadController = TextEditingController(text: widget.edad.toString());
+    _alturaController = TextEditingController(text: widget.altura.toString());
+    _pesoController = TextEditingController(text: widget.peso.toString());
     _sexoController = TextEditingController(text: widget.sexo);
   }
 
@@ -78,9 +78,9 @@ class _EditarPerfilPageState extends State<EditarPerfilPage> {
             _buildEditablePerfilInfo('Nombre', _nombreController),
             _buildEditablePerfilInfo('Apellidos', _apellidosController),
             _buildEditablePerfilInfo('Correo Electrónico', _correoController),
-            _buildEditablePerfilInfo('Edad', _edadController),
-            _buildEditablePerfilInfo('Altura', _alturaController),
-            _buildEditablePerfilInfo('Peso', _pesoController),
+            _buildEditablePerfilInfo('Edad', _edadController, isNumeric: true),
+            _buildEditablePerfilInfo('Altura', _alturaController, isNumeric: true),
+            _buildEditablePerfilInfo('Peso', _pesoController, isNumeric: true),
             _buildEditablePerfilInfo('Sexo', _sexoController),
             ElevatedButton(
               onPressed: () {
@@ -102,7 +102,7 @@ class _EditarPerfilPageState extends State<EditarPerfilPage> {
     );
   }
 
-  Widget _buildEditablePerfilInfo(String label, TextEditingController controller) {
+  Widget _buildEditablePerfilInfo(String label, TextEditingController controller, {bool isNumeric = false}) {
     return ListTile(
       title: Text(
         label,
@@ -111,6 +111,7 @@ class _EditarPerfilPageState extends State<EditarPerfilPage> {
       subtitle: TextField(
         controller: controller,
         style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold, color: Colors.white),
+        keyboardType: isNumeric ? TextInputType.numberWithOptions(decimal: true) : TextInputType.text,
         decoration: InputDecoration(
           enabledBorder: UnderlineInputBorder(
             borderSide: BorderSide(color: Colors.white),

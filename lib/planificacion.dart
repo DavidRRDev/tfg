@@ -1,4 +1,7 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'firebase_service.dart';
 
 class PlanificacionPage extends StatefulWidget {
   @override
@@ -6,19 +9,7 @@ class PlanificacionPage extends StatefulWidget {
 }
 
 class _PlanificacionPageState extends State<PlanificacionPage> {
-  // Mapa para mantener el estado de la expansión de cada día
-  Map<String, bool> _expansionState = {
-    'Lunes': false,
-    'Martes': false,
-    'Miércoles': false,
-    'Jueves': false,
-    'Viernes': false,
-    'Sábado': false,
-    'Domingo': false,
-  };
-
-  // Lista para mantener los registros por día
-  Map<String, List<String>> _recordsByDay = {
+  Map<String, List<Map<String, dynamic>>> _recordsByDay = {
     'Lunes': [],
     'Martes': [],
     'Miércoles': [],
@@ -28,18 +19,41 @@ class _PlanificacionPageState extends State<PlanificacionPage> {
     'Domingo': [],
   };
 
-  // Función para cambiar el estado de la expansión de un día
-  void _toggleExpansion(String day) {
+  String userId = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserData();
+  }
+
+  Future<void> _loadUserData() async {
+    await Firebase.initializeApp();
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      userId = user.uid;
+      _loadTrenSuperiorData();
+      _loadTrenInferiorData(); // Cargar los datos del tren inferior
+    }
+  }
+
+  Future<void> _loadTrenSuperiorData() async {
+    List<Map<String, dynamic>> data = await getTrenSuperiorData();
     setState(() {
-      _expansionState.updateAll((key, value) => false); // Cerrar todos los días
-      _expansionState[day] = true; // Abrir el día seleccionado
+      for (var record in data) {
+        String day = record['day'];
+        _recordsByDay[day]?.add(record);
+      }
     });
   }
 
-  // Función para agregar un registro al día seleccionado
-  void _addRecord(String day, String record) {
+  Future<void> _loadTrenInferiorData() async {
+    List<Map<String, dynamic>> data = await getTrenInferiorData(); // Obtener los datos del tren inferior
     setState(() {
-      _recordsByDay[day]?.add(record); // Agregar el registro al día correspondiente
+      for (var record in data) {
+        String day = record['day'];
+        _recordsByDay[day]?.add(record);
+      }
     });
   }
 
@@ -61,8 +75,8 @@ class _PlanificacionPageState extends State<PlanificacionPage> {
             child: Container(
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage('assets/fondo.jpg'), // Ruta de la imagen de fondo
-                  fit: BoxFit.cover, // Ajustar la imagen
+                  image: AssetImage('assets/fondo.jpg'),
+                  fit: BoxFit.cover,
                 ),
               ),
             ),
@@ -88,7 +102,7 @@ class _PlanificacionPageState extends State<PlanificacionPage> {
       margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
       padding: EdgeInsets.all(16.0),
       decoration: BoxDecoration(
-        color: Colors.black.withOpacity(0.5), // Color oscuro semitransparente
+        color: Colors.black.withOpacity(0.5),
         borderRadius: BorderRadius.circular(12.0),
       ),
       child: ExpansionTile(
@@ -96,20 +110,12 @@ class _PlanificacionPageState extends State<PlanificacionPage> {
           day,
           style: TextStyle(color: Colors.white),
         ),
-        initiallyExpanded: _expansionState[day] ?? false,
-        children: [
-          ..._recordsByDay[day]?.map((record) => ListTile(
-            title: Text(
-              record,
-              style: TextStyle(color: Colors.white),
-            ),
-          ))?.toList() ?? [],
-        ],
-        onExpansionChanged: (expanded) {
-          if (expanded) {
-            _toggleExpansion(day);
-          }
-        },
+        children: _recordsByDay[day]?.map((record) => ListTile(
+          title: Text(
+            "${record['exercise']} - ${record['reps']} reps - ${record['series']} series - Descanso: ${record['descanso']}",
+            style: TextStyle(color: Colors.white),
+          ),
+        ))?.toList() ?? [],
       ),
     );
   }
