@@ -17,29 +17,11 @@ class _PlanificacionPageState extends State<PlanificacionPage> {
     'Domingo': false,
   };
 
-  // Lista para mantener los registros por día
-  Map<String, List<String>> _recordsByDay = {
-    'Lunes': [],
-    'Martes': [],
-    'Miércoles': [],
-    'Jueves': [],
-    'Viernes': [],
-    'Sábado': [],
-    'Domingo': [],
-  };
-
   // Función para cambiar el estado de la expansión de un día
   void _toggleExpansion(String day) {
     setState(() {
       _expansionState.updateAll((key, value) => false); // Cerrar todos los días
       _expansionState[day] = true; // Abrir el día seleccionado
-    });
-  }
-
-  // Función para agregar un registro al día seleccionado
-  void _addRecord(String day, String record) {
-    setState(() {
-      _recordsByDay[day]?.add(record); // Agregar el registro al día correspondiente
     });
   }
 
@@ -59,6 +41,7 @@ class _PlanificacionPageState extends State<PlanificacionPage> {
         children: [
           Center(
             child: Container(
+             
               decoration: BoxDecoration(
                 image: DecorationImage(
                   image: AssetImage('assets/fondo.jpg'), // Ruta de la imagen de fondo
@@ -69,13 +52,13 @@ class _PlanificacionPageState extends State<PlanificacionPage> {
           ),
           ListView(
             children: [
-              _buildDayTile('Lunes'),
-              _buildDayTile('Martes'),
-              _buildDayTile('Miércoles'),
-              _buildDayTile('Jueves'),
-              _buildDayTile('Viernes'),
-              _buildDayTile('Sábado'),
-              _buildDayTile('Domingo'),
+              _buildDayTile('Lunes', ['Registro 1', 'Registro 2']),
+              _buildDayTile('Martes', ['Registro 3', 'Registro 4', 'Registro 5']),
+              _buildDayTile('Miércoles', ['Registro 6', 'Registro 7']),
+              _buildDayTile('Jueves', ['Registro 8', 'Registro 9', 'Registro 10']),
+              _buildDayTile('Viernes', ['Registro 11']),
+              _buildDayTile('Sábado', ['Registro 12', 'Registro 13']),
+              _buildDayTile('Domingo', ['Registro 14']),
             ],
           ),
         ],
@@ -83,7 +66,7 @@ class _PlanificacionPageState extends State<PlanificacionPage> {
     );
   }
 
-  Widget _buildDayTile(String day) {
+  Widget _buildDayTile(String day, List<String> records) {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
       padding: EdgeInsets.all(16.0),
@@ -98,12 +81,16 @@ class _PlanificacionPageState extends State<PlanificacionPage> {
         ),
         initiallyExpanded: _expansionState[day] ?? false,
         children: [
-          ..._recordsByDay[day]?.map((record) => ListTile(
-            title: Text(
-              record,
-              style: TextStyle(color: Colors.white),
+          for (var record in records)
+            ListTile(
+              title: Text(
+                record,
+                style: TextStyle(color: Colors.white),
+              ),
+              onTap: () {
+                print('Registro: $record');
+              },
             ),
-          ))?.toList() ?? [],
         ],
         onExpansionChanged: (expanded) {
           if (expanded) {
