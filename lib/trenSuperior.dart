@@ -91,9 +91,20 @@ class _TrenSuperiorPageState extends State<TrenSuperiorPage> {
       });
 
       _showNotification('Datos enviados correctamente', Colors.green);
+      _resetSelections();
     } else {
       _showNotification('Por favor, selecciona todos los campos', Colors.red);
     }
+  }
+
+  void _resetSelections() {
+    setState(() {
+      selectedDay = null;
+      selectedExercise = null;
+      selectedReps = null;
+      selectedSeries = null;
+      selectedDescanso = null;
+    });
   }
 
   void _showNotification(String message, Color color) {
@@ -126,8 +137,7 @@ class _TrenSuperiorPageState extends State<TrenSuperiorPage> {
             child: Container(
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage(
-                      'assets/fondo.jpg'), // Ruta de la imagen de fondo
+                  image: AssetImage('assets/fondo.jpg'), // Ruta de la imagen de fondo
                   fit: BoxFit.cover, // Ajustar la imagen
                 ),
               ),
@@ -179,7 +189,6 @@ class _TrenSuperiorPageState extends State<TrenSuperiorPage> {
                         });
                       },
                     ),
-
                     SizedBox(height: 16.0), // Espacio entre subtítulos
                     Text('Selecciona series',
                         style: TextStyle(color: Colors.white, fontSize: 16.0)),
@@ -193,7 +202,6 @@ class _TrenSuperiorPageState extends State<TrenSuperiorPage> {
                         });
                       },
                     ),
-
                     SizedBox(height: 16.0), // Espacio entre subtítulos
                     Text('Selecciona descanso',
                         style: TextStyle(color: Colors.white, fontSize: 16.0)),
@@ -211,7 +219,7 @@ class _TrenSuperiorPageState extends State<TrenSuperiorPage> {
                     Center(
                       child: ElevatedButton(
                         onPressed: _sendData,
-                        child: Text('Enviar'),
+                        child: Text('Registrar'),
                       ),
                     ),
                   ],
@@ -230,7 +238,8 @@ class _TrenSuperiorPageState extends State<TrenSuperiorPage> {
     required List<T> items,
     required ValueChanged<T?> onChanged,
   }) {
-    return Container(      padding: EdgeInsets.symmetric(horizontal: 16.0),
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 16.0),
       margin: EdgeInsets.only(bottom: 8.0),
       decoration: BoxDecoration(
         color: Colors.black.withOpacity(0.5),
@@ -246,8 +255,7 @@ class _TrenSuperiorPageState extends State<TrenSuperiorPage> {
         items: items.map<DropdownMenuItem<T>>((T value) {
           return DropdownMenuItem<T>(
             value: value,
-            child:
-                Text(value.toString(), style: TextStyle(color: Colors.white)),
+            child: Text(value.toString(), style: TextStyle(color: Colors.white)),
           );
         }).toList(),
       ),
@@ -260,4 +268,3 @@ void main() {
     home: TrenSuperiorPage(),
   ));
 }
-

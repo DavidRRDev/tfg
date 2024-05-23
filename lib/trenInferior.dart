@@ -91,9 +91,20 @@ class _TrenInferiorPageState extends State<TrenInferiorPage> {
       });
 
       _showNotification('Datos enviados correctamente', Colors.green);
+      _resetSelections();  // Restablecer campos después de enviar
     } else {
       _showNotification('Por favor, selecciona todos los campos', Colors.red);
     }
+  }
+
+  void _resetSelections() {
+    setState(() {
+      selectedDay = null;
+      selectedExercise = null;
+      selectedReps = null;
+      selectedSeries = null;
+      selectedDescanso = null;
+    });
   }
 
   void _showNotification(String message, Color color) {
@@ -179,7 +190,6 @@ class _TrenInferiorPageState extends State<TrenInferiorPage> {
                         });
                       },
                     ),
-
                     SizedBox(height: 16.0), // Espacio entre subtítulos
                     Text('Selecciona series',
                         style: TextStyle(color: Colors.white, fontSize: 16.0)),
@@ -193,7 +203,6 @@ class _TrenInferiorPageState extends State<TrenInferiorPage> {
                         });
                       },
                     ),
-
                     SizedBox(height: 16.0), // Espacio entre subtítulos
                     Text('Selecciona descanso',
                         style: TextStyle(color: Colors.white, fontSize: 16.0)),
@@ -211,7 +220,7 @@ class _TrenInferiorPageState extends State<TrenInferiorPage> {
                     Center(
                       child: ElevatedButton(
                         onPressed: _sendData,
-                        child: Text('Enviar'),
+                        child: Text('Registrar'),
                       ),
                     ),
                   ],
@@ -261,4 +270,3 @@ void main() {
     home: TrenInferiorPage(),
   ));
 }
-
