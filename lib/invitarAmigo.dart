@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:social_share/social_share.dart';
 
 class InvitarAmigoPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final enlace = 'https://tu-aplicacion.com'; // Enlace que deseas compartir
+    final enlace = 'file:///C:/Users/Usuario/OneDrive/Documentos/github/tfg/build/app/outputs/apk/release/app-release.apk'; // Ruta del APK que deseas compartir
 
     return Scaffold(
       appBar: AppBar(
