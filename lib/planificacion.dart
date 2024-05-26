@@ -32,14 +32,23 @@ class _PlanificacionPageState extends State<PlanificacionPage> {
     User? user = FirebaseAuth.instance.currentUser;
     if (user != null) {
       userId = user.uid;
-      _loadTrenSuperiorData();
-      _loadTrenInferiorData(); // Cargar los datos del tren inferior
+      await _loadTrenSuperiorData();
+      await _loadTrenInferiorData(); // Cargar los datos del tren inferior
     }
   }
 
   Future<void> _loadTrenSuperiorData() async {
     List<Map<String, dynamic>> data = await getTrenSuperiorData();
     setState(() {
+      _recordsByDay = {
+        'Lunes': [],
+        'Martes': [],
+        'Miércoles': [],
+        'Jueves': [],
+        'Viernes': [],
+        'Sábado': [],
+        'Domingo': [],
+      };
       for (var record in data) {
         String day = record['day'];
         _recordsByDay[day]?.add(record);
@@ -48,7 +57,7 @@ class _PlanificacionPageState extends State<PlanificacionPage> {
   }
 
   Future<void> _loadTrenInferiorData() async {
-    List<Map<String, dynamic>> data = await getTrenInferiorData(); // Obtener los datos del tren inferior
+    List<Map<String, dynamic>> data = await getTrenInferiorData();
     setState(() {
       for (var record in data) {
         String day = record['day'];
@@ -67,6 +76,14 @@ class _PlanificacionPageState extends State<PlanificacionPage> {
         ),
         backgroundColor: Colors.transparent,
         elevation: 0,
+        actions: [
+          IconButton(
+            icon: Icon(Icons.delete),
+            onPressed: () {
+              _mostrarDialogoConfirmacion();
+            },
+          ),
+        ],
       ),
       extendBodyBehindAppBar: true,
       body: Stack(
@@ -117,6 +134,57 @@ class _PlanificacionPageState extends State<PlanificacionPage> {
           ),
         ))?.toList() ?? [],
       ),
+    );
+  }
+
+  void _mostrarDialogoConfirmacion() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Confirmación'),
+          content: Text('¿Seguro que desea eliminar todos los datos registrados?'),
+          actions: [
+            TextButton(
+              child: Text('Cancelar'),
+              onPressed: () {
+                Navigator.of(context).pop(); // Cerrar el diálogo sin hacer nada
+              },
+            ),
+            TextButton(
+              child: Text('Aceptar'),
+              onPressed: () async {
+                await deleteAllInferiorData();
+                await deleteAllTrenSuperiorData(); // Eliminar todos los registros
+                Navigator.of(context).pop(); // Cerrar el diálogo después de aceptar
+                _mostrarMensajeExito(); // Mostrar mensaje de éxito
+                await _loadUserData(); // Actualizar los datos después de eliminar
+                setState(() {}); // Forzar un redibujado manual
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _mostrarMensajeExito() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Éxito'),
+          content: Text('Datos eliminados correctamente'),
+          actions: [
+            TextButton(
+              child: Text('Aceptar'),
+              onPressed: () {
+                Navigator.of(context).pop(); // Cerrar el diálogo después de aceptar
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }
