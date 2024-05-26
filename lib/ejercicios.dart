@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
-import 'trenSuperior.dart';  // Asegúrate de tener estos archivos creados
-import 'trenInferior.dart';  // Asegúrate de tener estos archivos creados
-import 'paginaPrincipal.dart';  // Asegúrate de tener este archivo creado
+import 'trenSuperior.dart';
+import 'trenInferior.dart';
+import 'paginaPrincipal.dart';
 
 class EjerciciosPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      extendBodyBehindAppBar: true, // Permite que el cuerpo se extienda detrás del AppBar
+      extendBodyBehindAppBar:
+          true, // Permite que el cuerpo se extienda detrás del AppBar
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -16,17 +17,19 @@ class EjerciciosPage extends StatelessWidget {
           onPressed: () {
             Navigator.of(context).pop();
           },
+          color: Colors.white,
         ),
       ),
       body: Stack(
         fit: StackFit.expand,
         children: [
           Image.asset(
-            'assets/fondo.jpg', // Asegúrate de tener una imagen de fondo
+            'assets/fondo.jpg',
             fit: BoxFit.cover,
           ),
           Container(
-            color: Colors.black.withOpacity(0.5), // Fondo oscuro semitransparente
+            color:
+                Colors.black.withOpacity(0.5), // Fondo oscuro semitransparente
           ),
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -65,7 +68,6 @@ class EjerciciosPage extends StatelessWidget {
                 child: Text('Salir'),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.white,
-                 
                 ),
               ),
             ],
@@ -75,7 +77,8 @@ class EjerciciosPage extends StatelessWidget {
     );
   }
 
-  Widget _buildImageCard(BuildContext context, String title, String imagePath, Widget destinationPage) {
+  Widget _buildImageCard(BuildContext context, String title, String imagePath,
+      Widget destinationPage) {
     return GestureDetector(
       onTap: () {
         Navigator.push(

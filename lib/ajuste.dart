@@ -7,7 +7,7 @@ class AjustesPage extends StatefulWidget {
 
 class _AjustesPageState extends State<AjustesPage> {
   bool _notificacionesActivas = true; // Estado inicial del interruptor
-  String _idiomaSeleccionado = 'Español'; // Idioma seleccionado
+  String _idiomaSeleccionado = 'Español'; 
 
   @override
   Widget build(BuildContext context) {

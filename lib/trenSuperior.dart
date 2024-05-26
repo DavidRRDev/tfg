@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:tfg/paginaPrincipal.dart';
 import 'firebase_service.dart';
 
 class TrenSuperiorPage extends StatefulWidget {
@@ -124,7 +125,10 @@ class _TrenSuperiorPageState extends State<TrenSuperiorPage> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: Icon(
+            Icons.arrow_back,
+            color: Colors.white,
+          ),
           onPressed: () {
             Navigator.of(context).pop();
           },
@@ -137,7 +141,8 @@ class _TrenSuperiorPageState extends State<TrenSuperiorPage> {
             child: Container(
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage('assets/fondo.jpg'), // Ruta de la imagen de fondo
+                  image: AssetImage(
+                      'assets/fondo.jpg'), // Ruta de la imagen de fondo
                   fit: BoxFit.cover, // Ajustar la imagen
                 ),
               ),
@@ -180,7 +185,8 @@ class _TrenSuperiorPageState extends State<TrenSuperiorPage> {
                     Text('Selecciona repeticiones',
                         style: TextStyle(color: Colors.white, fontSize: 16.0)),
                     _buildDropdown(
-                      value: selectedReps != null ? selectedReps.toString() : null,
+                      value:
+                          selectedReps != null ? selectedReps.toString() : null,
                       hint: 'Selecciona repeticiones',
                       items: repeticiones.map((rep) => rep.toString()).toList(),
                       onChanged: (reps) {
@@ -193,7 +199,9 @@ class _TrenSuperiorPageState extends State<TrenSuperiorPage> {
                     Text('Selecciona series',
                         style: TextStyle(color: Colors.white, fontSize: 16.0)),
                     _buildDropdown(
-                      value: selectedSeries != null ? selectedSeries.toString() : null,
+                      value: selectedSeries != null
+                          ? selectedSeries.toString()
+                          : null,
                       hint: 'Selecciona series',
                       items: series.map((s) => s.toString()).toList(),
                       onChanged: (series) {
@@ -215,11 +223,25 @@ class _TrenSuperiorPageState extends State<TrenSuperiorPage> {
                         });
                       },
                     ),
-                    SizedBox(height: 32.0), // Espacio entre los dropdowns y el botón
+                    SizedBox(
+                        height: 32.0), // Espacio entre los dropdowns y el botón
                     Center(
                       child: ElevatedButton(
                         onPressed: _sendData,
                         child: Text('Registrar'),
+                      ),
+                    ),
+                    SizedBox(height: 16.0), // Espacio entre botones
+                    Center(
+                      child: ElevatedButton(
+                        onPressed: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => PaginaPrincipal(),
+                            ),
+                          );
+                        },
+                        child: Text('Ir a Inicio'),
                       ),
                     ),
                   ],
@@ -255,7 +277,8 @@ class _TrenSuperiorPageState extends State<TrenSuperiorPage> {
         items: items.map<DropdownMenuItem<T>>((T value) {
           return DropdownMenuItem<T>(
             value: value,
-            child: Text(value.toString(), style: TextStyle(color: Colors.white)),
+            child:
+                Text(value.toString(), style: TextStyle(color: Colors.white)),
           );
         }).toList(),
       ),

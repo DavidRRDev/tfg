@@ -76,12 +76,19 @@ class _PlanificacionPageState extends State<PlanificacionPage> {
         ),
         backgroundColor: Colors.transparent,
         elevation: 0,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
         actions: [
           IconButton(
             icon: Icon(Icons.delete),
             onPressed: () {
               _mostrarDialogoConfirmacion();
             },
+            color: Colors.white,
           ),
         ],
       ),
@@ -127,12 +134,15 @@ class _PlanificacionPageState extends State<PlanificacionPage> {
           day,
           style: TextStyle(color: Colors.white),
         ),
-        children: _recordsByDay[day]?.map((record) => ListTile(
-          title: Text(
-            "${record['exercise']} - ${record['reps']} reps - ${record['series']} series - Descanso: ${record['descanso']}",
-            style: TextStyle(color: Colors.white),
-          ),
-        ))?.toList() ?? [],
+        children: _recordsByDay[day]
+                ?.map((record) => ListTile(
+                      title: Text(
+                        "${record['exercise']} - ${record['reps']} reps - ${record['series']} series - Descanso: ${record['descanso']}",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ))
+                ?.toList() ??
+            [],
       ),
     );
   }
@@ -143,7 +153,8 @@ class _PlanificacionPageState extends State<PlanificacionPage> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text('Confirmación'),
-          content: Text('¿Seguro que desea eliminar todos los datos registrados?'),
+          content:
+              Text('¿Seguro que desea eliminar todos los datos registrados?'),
           actions: [
             TextButton(
               child: Text('Cancelar'),
@@ -156,7 +167,8 @@ class _PlanificacionPageState extends State<PlanificacionPage> {
               onPressed: () async {
                 await deleteAllInferiorData();
                 await deleteAllTrenSuperiorData(); // Eliminar todos los registros
-                Navigator.of(context).pop(); // Cerrar el diálogo después de aceptar
+                Navigator.of(context)
+                    .pop(); // Cerrar el diálogo después de aceptar
                 _mostrarMensajeExito(); // Mostrar mensaje de éxito
                 await _loadUserData(); // Actualizar los datos después de eliminar
                 setState(() {}); // Forzar un redibujado manual
@@ -179,7 +191,8 @@ class _PlanificacionPageState extends State<PlanificacionPage> {
             TextButton(
               child: Text('Aceptar'),
               onPressed: () {
-                Navigator.of(context).pop(); // Cerrar el diálogo después de aceptar
+                Navigator.of(context)
+                    .pop(); // Cerrar el diálogo después de aceptar
               },
             ),
           ],
