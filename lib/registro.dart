@@ -38,62 +38,26 @@ class _RegistroState extends State<Registro> {
 
   Future<void> _registerUserToFirebase(BuildContext context) async {
     try {
-      // Validar que todos los campos estén llenos
       if (_nombreController.text.isEmpty ||
           _correoController.text.isEmpty ||
           _contrasenaController.text.isEmpty ||
           _apellidosController.text.isEmpty ||
           _confirmarContrasenaController.text.isEmpty) {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text('Error de registro'),
-              content: Text('Por favor, completa todos los campos.'),
-              actions: <Widget>[
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: Text('Aceptar'),
-                ),
-              ],
-            );
-          },
-        );
+        _showErrorDialog(context, 'Por favor, completa todos los campos.');
         return;
       }
 
-      // Validar que las contraseñas coincidan
       if (_contrasenaController.text != _confirmarContrasenaController.text) {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text('Error de registro'),
-              content: Text('Las contraseñas no coinciden.'),
-              actions: <Widget>[
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: Text('Aceptar'),
-                ),
-              ],
-            );
-          },
-        );
+        _showErrorDialog(context, 'Las contraseñas no coinciden.');
         return;
       }
 
-      // Registrar el usuario en Firebase Authentication
       UserCredential userCredential =
           await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: _correoController.text,
         password: _contrasenaController.text,
       );
 
-      // Guardar los datos adicionales del usuario en Firestore
       await FirebaseFirestore.instance
           .collection('usuarios')
           .doc(userCredential.user!.uid)
@@ -109,89 +73,98 @@ class _RegistroState extends State<Registro> {
         ),
       );
       await Future.delayed(Duration(seconds: 2));
-      
+
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => Login()),
       );
     } catch (e) {
       print('Error al registrar usuario: $e');
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text('Error de registro'),
-            content: Text(
-                'Ocurrió un error al registrar al usuario. Por favor, inténtalo de nuevo más tarde.'),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: Text('Aceptar'),
-              ),
-            ],
-          );
-        },
-      );
+      _showErrorDialog(context,
+          'Ocurrió un error al registrar al usuario. Por favor, inténtalo de nuevo más tarde.');
     }
+  }
+
+  void _showErrorDialog(BuildContext context, String message) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Error de registro'),
+          content: Text(message),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Aceptar'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    final screenHeight = MediaQuery.of(context).size.height;
-
     return Scaffold(
-      resizeToAvoidBottomInset: false,
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              Colors.black,
-              Colors.blueAccent,
-            ],
-          ),
-        ),
-        child: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                SizedBox(height: screenHeight * 0.05),
-                Text(
-                  'Formulario de Registro',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 28, // Aumentar el tamaño de fuente del título
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
+      resizeToAvoidBottomInset: true,
+      body: LayoutBuilder(
+        builder: (BuildContext context, BoxConstraints constraints) {
+          final screenHeight = MediaQuery.of(context).size.height;
+          final keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
+
+          return SingleChildScrollView(
+            child: Container(
+              height: screenHeight - keyboardHeight,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Colors.black,
+                    Colors.blueAccent,
+                  ],
+                ),
+              ),
+              child: Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: <Widget>[
+                      SizedBox(height: screenHeight * 0.05),
+                      Text(
+                        'Formulario de Registro',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 28,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                      SizedBox(height: screenHeight * 0.05),
+                      _buildForm(),
+                      SizedBox(height: screenHeight * 0.05),
+                      ElevatedButton(
+                        onPressed: () {
+                          _registerUserToFirebase(context);
+                        },
+                        child: Text('Enviar', style: TextStyle(fontSize: 18)),
+                      ),
+                      SizedBox(height: screenHeight * 0.05),
+                      Image.asset(
+                        'assets/drj.png',
+                        height: screenHeight * 0.1,
+                        width: screenHeight * 0.1,
+                      ),
+                    ],
                   ),
                 ),
-                SizedBox(height: screenHeight * 0.05),
-                _buildForm(),
-                SizedBox(height: screenHeight * 0.05),
-                ElevatedButton(
-                  onPressed: () {
-                    _registerUserToFirebase(context);
-                  },
-                  child: Text('Enviar',
-                      style: TextStyle(
-                          fontSize:
-                              18)), // Aumentar el tamaño de fuente del botón
-                ),
-                SizedBox(height: screenHeight * 0.05),
-                Image.asset(
-                  'assets/drj.png',
-                  height: screenHeight * 0.1,
-                  width: screenHeight * 0.1,
-                ),
-              ],
+              ),
             ),
-          ),
-        ),
+          );
+        },
       ),
     );
   }
@@ -203,8 +176,7 @@ class _RegistroState extends State<Registro> {
         borderRadius: BorderRadius.circular(12.0),
       ),
       child: Padding(
-        padding: const EdgeInsets.all(
-            16.0), // Aumentar el padding para campos más grandes
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
             _buildTextField(_nombreController, 'Nombre'),
@@ -226,15 +198,12 @@ class _RegistroState extends State<Registro> {
   Widget _buildTextField(TextEditingController controller, String label) {
     return TextFormField(
       controller: controller,
-      style: TextStyle(
-          color: Colors.white, fontSize: 18), // Aumentar el tamaño de fuente
+      style: TextStyle(color: Colors.white, fontSize: 18),
       decoration: InputDecoration(
         labelText: label,
-        labelStyle: TextStyle(
-            color: Colors.white, fontSize: 18), // Aumentar el tamaño de fuente
+        labelStyle: TextStyle(color: Colors.white, fontSize: 18),
         border: InputBorder.none,
-        contentPadding: EdgeInsets.symmetric(
-            vertical: 16.0, horizontal: 12.0), // Aumentar el padding interno
+        contentPadding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 12.0),
       ),
     );
   }
@@ -242,16 +211,13 @@ class _RegistroState extends State<Registro> {
   Widget _buildPasswordField(TextEditingController controller, String label) {
     return TextFormField(
       controller: controller,
-      style: TextStyle(
-          color: Colors.white, fontSize: 18), // Aumentar el tamaño de fuente
+      style: TextStyle(color: Colors.white, fontSize: 18),
       obscureText: true,
       decoration: InputDecoration(
         labelText: label,
-        labelStyle: TextStyle(
-            color: Colors.white, fontSize: 18), // Aumentar el tamaño de fuente
+        labelStyle: TextStyle(color: Colors.white, fontSize: 18),
         border: InputBorder.none,
-        contentPadding: EdgeInsets.symmetric(
-            vertical: 16.0, horizontal: 12.0), // Aumentar el padding interno
+        contentPadding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 12.0),
       ),
     );
   }
